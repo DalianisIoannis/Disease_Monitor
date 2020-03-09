@@ -1,14 +1,15 @@
-#include "../headers/includer.h"
+#include "../headers/disMonitor.h"
+#include <stdio.h>
 
 int main(void){
-    printf("Start\n");
+    printf("Start\n\n");
 
-    patientRecord* a = malloc(sizeof(patientRecord));
+    
     
     disMonitor();
     
-    free(a);
+    
 
-    printf("End\n");
+    printf("End\n\n");
     return 0;
 }

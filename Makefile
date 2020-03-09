@@ -12,7 +12,7 @@ EXECUTABLE = diseaseMonitor
 _DEPS = includer.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o disMonitor.o
+_OBJ = main.o disMonitor.o linkedList.o patients.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
@@ -20,10 +20,6 @@ $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 
 $(EXECUTABLE): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
-
-# valgrind:
-	# valgrind ./runner
-	# valgrind --leak-check=full ./runner
 
 clean:
 	rm -f $(ODIR)/*.o

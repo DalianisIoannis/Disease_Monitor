@@ -1,3 +1,5 @@
+#pragma once
+
 #define GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,3 +8,4 @@
 
 #include "./patients.h"
 #include "./disMonitor.h"
+#include "./linkedList.h"

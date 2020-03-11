@@ -1,22 +1,47 @@
 #include "../headers/linkedList.h"
 
 Linked_List initlinkedList(){
-    Linked_List ll;
+    Linked_List ll = malloc(sizeof(lList));
 
-    ll = malloc(sizeof(lList));
+    if( ll==NULL ){
+        fprintf(stderr, "Couldn't allocate Linked List. Abort...\n");
+        return NULL;
+    }
+
     (ll)->front     = NULL;
     (ll)->rear      = NULL;
 
     return ll;
 }
 
-void addNode(Linked_List *ll, patientRecord *pR){
+bool checkDup(Linked_List *ll, patientRecord pR){
 
-    listNode listNode = malloc(sizeof(lNode));
+    listNode tmp = (*ll)->front;
+    while ( tmp!=NULL ){
+        
+        // if(tmp->item->recordId == pR->recordId){
+        if( strcmp(tmp->item->recordId, pR->recordId)==0 ){
+            printf("Patient with recordId %d already exists. Rejected!\n", atoi(pR->recordId));
+            return false;
+        }
+        tmp = tmp->next;
+    }
+    return true;
+
+}
+
+// void addNode(Linked_List *ll, patientRecord *pR){
+bool addNode(Linked_List *ll, patientRecord pR){
     
+    listNode listNode = malloc(sizeof(lNode));
+    if(listNode==NULL){ return false; }
+    
+    // listNode->item = malloc(sizeof( &(*pR) ));
     listNode->item = malloc(sizeof(pRecord));
+    if(listNode->item==NULL){ return false; }
 
-    memcpy(listNode->item, (*pR), sizeof(pRecord));
+    // memcpy(listNode->item, (*pR), sizeof(pRecord));
+    memcpy(listNode->item, (pR), sizeof(pRecord));
 
     if( (*ll)->front==NULL ){   // empty list
         (*ll)->front = listNode;
@@ -26,23 +51,28 @@ void addNode(Linked_List *ll, patientRecord *pR){
         (*ll)->rear->next = NULL;
     }
     else{
-        (*ll)->rear->next = listNode;
-        (*ll)->rear = listNode;
-        (*ll)->rear->next = NULL;
+        if(checkDup(ll, pR)){   // check if already exists
+            (*ll)->rear->next = listNode;
+            (*ll)->rear = listNode;
+            (*ll)->rear->next = NULL;
+        }
+        else{
+            deleteRecord( &(listNode->item) );
+            free(listNode);
+        }
+        
     }
     
-    
-    free(*pR);
-    return;
+    free(pR);
+
+    return true;
 }
 
 void emptyLinkedList(Linked_List *ll){
 
+    printf("\n");
     listNode tmp;
     while ( (*ll)->front!=NULL ){
-
-        // free((*ll)->front->item->recordId);
-        // free( (*ll)->front->item );
 
         deleteRecord( &((*ll)->front->item) );
 
@@ -55,5 +85,16 @@ void emptyLinkedList(Linked_List *ll){
 
     }
     
+}
 
+void printLinkedList(Linked_List ll){
+    listNode tmp = ll->front;
+    while(tmp!=NULL){
+        
+        printRecord(tmp->item);
+
+        tmp = tmp->next;
+
+        printf("\n");
+    }
 }

@@ -1,9 +1,14 @@
 #pragma once
-#include "./includer.h"
+
+#include "./patients.h"
+#include "./disMonitor.h"
+#include <stdbool.h>
 
 typedef struct lNode{
 
+    // patientRecord *item;
     patientRecord item;
+    
     struct lNode *next;
 
 } lNode;
@@ -20,6 +25,11 @@ typedef lList *Linked_List;
 
 Linked_List initlinkedList();
 
-void addNode(Linked_List*, patientRecord*);
+// void addNode(Linked_List*, patientRecord*);
+bool addNode(Linked_List*, patientRecord);
 
 void emptyLinkedList(Linked_List*);
+
+void printLinkedList(Linked_List);
+
+bool checkDup(Linked_List*, patientRecord);

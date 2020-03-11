@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "dismonitor.h": "c"
+        "dismonitor.h": "c",
+        "typeinfo": "c",
+        "linkedlist.h": "c"
     }
 }

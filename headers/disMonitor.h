@@ -9,4 +9,4 @@ bool disMonitor();
 
 // void emptyMonitor(FILE**, Linked_List*, char**);
 
-bool compareDates(char*, char*);
+int compareDates(char*, char*);

@@ -1,4 +1,3 @@
-889 Mary Smith COVID-2019 China 25-1-2019 27-1-2019
 776 Larry Jones SARS-1 Italy 10-02-2003 -
 125 Jon Dupont H1N1 USA 12-02-2016 15-02-2016
 71 Michelle White COVID-2019 China 20-10-2004 -
@@ -10,6 +9,8 @@
 28 Crystal Stokes FLU-2018 Switzerland 26-03-2005 18-07-2019
 36 Paris Pakis SARS-1 Uganda 07-09-2008 10-12-2007
 40 Dylan Webb SARS-1 Australia 15-06-2000 05-01-2015
+889 Mary Smith COVID-2019 China 25-1-2019 27-1-2019
+4 Makis Makakis MERS-COV Australia 03-07-2006 16-02-2006
 84 Julie Martin SARS-COV-2 Australia 10-07-2008 15-12-2016
 78 Timothy Prince FLU-2018 Germany 11-09-2001 10-12-2013
 91 Jasmin Gomez MERS-COV China 28-05-2008 25-08-2008
@@ -22,3 +23,5 @@
 80 Maurice Mason MERS-COV Egypt 10-06-2010 13-11-2019
 88 Scott Brown H1N1 France 25-04-2003 07-06-2019
 1 Giannis Kostas EVD Vietnam 06-09-2002 22-01-2012
+86 Mike Bazovski MERS-COV Egypt 10-06-2010 13-06-2010
+33 Paris Pakis SARS-1 USA 11-12-2007 10-12-2007

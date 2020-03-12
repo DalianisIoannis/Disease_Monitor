@@ -19,7 +19,6 @@ bool checkDup(Linked_List *ll, patientRecord pR){
     listNode tmp = (*ll)->front;
     while ( tmp!=NULL ){
         
-        // if(tmp->item->recordId == pR->recordId){
         if( strcmp(tmp->item->recordId, pR->recordId)==0 ){
             printf("Patient with recordId %d already exists. Rejected!\n", atoi(pR->recordId));
             return false;
@@ -30,41 +29,36 @@ bool checkDup(Linked_List *ll, patientRecord pR){
 
 }
 
-// void addNode(Linked_List *ll, patientRecord *pR){
 bool addNode(Linked_List *ll, patientRecord pR){
     
-    listNode listNode = malloc(sizeof(lNode));
-    if(listNode==NULL){ return false; }
+    listNode llNode = malloc(sizeof(lNode));
+    if(llNode==NULL){ return false; }
     
-    // listNode->item = malloc(sizeof( &(*pR) ));
-    listNode->item = malloc(sizeof(pRecord));
-    if(listNode->item==NULL){ return false; }
-
-    // memcpy(listNode->item, (*pR), sizeof(pRecord));
-    memcpy(listNode->item, (pR), sizeof(pRecord));
+    // llNode->item = malloc(sizeof(pRecord));
+    // if(llNode->item==NULL){ return false; }
+    // memcpy(llNode->item, (pR), sizeof(pRecord));
+    llNode->item = pR;
 
     if( (*ll)->front==NULL ){   // empty list
-        (*ll)->front = listNode;
+        (*ll)->front = llNode;
         (*ll)->front->next = NULL;
         
-        (*ll)->rear = listNode;
+        (*ll)->rear = llNode;
         (*ll)->rear->next = NULL;
     }
     else{
         if(checkDup(ll, pR)){   // check if already exists
-            (*ll)->rear->next = listNode;
-            (*ll)->rear = listNode;
+            (*ll)->rear->next = llNode;
+            (*ll)->rear = llNode;
             (*ll)->rear->next = NULL;
         }
         else{
-            deleteRecord( &(listNode->item) );
-            free(listNode);
+            deleteRecord( &(llNode->item) );
+            free(llNode);
         }
-        
     }
     
-    free(pR);
-
+    // free(pR);
     return true;
 }
 

@@ -12,7 +12,7 @@ EXECUTABLE = diseaseMonitor
 _DEPS = includer.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o disMonitor.o linkedList.o patients.o
+_OBJ = main.o disMonitor.o linkedList.o patients.o AVL.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
@@ -23,4 +23,10 @@ $(EXECUTABLE): $(OBJ)
 
 clean:
 	rm -f $(ODIR)/*.o
-	# rm -f $(BDIR)/$(EXECUTABLE)
+	rm -f $(BDIR)/$(EXECUTABLE)
+
+all:
+	clear
+	make clean
+	make
+	valgrind ./diseaseMonitor

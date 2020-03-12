@@ -25,12 +25,31 @@ void emptyMonitor(FILE **f, Linked_List *ll, char** line){
 
 }
 
+bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
+
+    listNode tmp = Entries->front;
+
+    while(tmp!=NULL){
+
+        printf("Inputiing to AVL %s\n", tmp->item->recordId);
+
+        if(!addAVLNode(AVL_Tree, tmp->item)){
+            return false;
+        }
+
+        tmp = tmp->next;
+    }
+
+    return true;
+}
+
 bool disMonitor(){
     FILE* file;
     size_t len = 0;
     __ssize_t read;
     char *line = NULL;
     Linked_List Entries;
+    AVLTreePtr AVL_Tree;
 
     if(!initMonitor(&file, &Entries)){
         return false;
@@ -46,7 +65,7 @@ bool disMonitor(){
             return false;
         }
         //check if dates are ok
-        if(!compareDates(a->entryDate, a->exitDate)){
+        if( compareDates(a->entryDate, a->exitDate)==1 ){
             printf("Patient with recordId %s has wrong dates. Rejected!\n", a->recordId);
             deleteRecord(&a);
             continue;
@@ -62,63 +81,103 @@ bool disMonitor(){
 
     printLinkedList(Entries);
 
-    // emptyLinkedList(&Entries);
+    // AVL
+    if( (AVL_Tree = initAVLTree())==NULL ){
+            fprintf(stderr, "Couldn't allocate AVL Tree. Abort...\n");
+            return false;
+        }
+    if(!inputLLtoAVL(Entries, AVL_Tree)){
+        fprintf(stderr, "Couldn't fill AVL tree. Abort...\n");
+        return false;
+    }
+    printAVLTree(AVL_Tree);
+    emptyAVLTree(AVL_Tree);
+
     emptyMonitor(&file, &Entries, &line);
 
     return true;
 }
 
-bool compareDates(char *d1, char *d2){
-
-    printf("D1 is %s\n", d1);
-    printf("D2 is %s\n", d2);
+// return 
+// 0    if dates are same
+// 1    if first date is bigger(later than second date)
+// 2    for the opposite
+// -1   if first is -
+// -2   if second is -
+int compareDates(char *d1, char *d2){
 
     if(strcmp(d2,"-")==0){
-        return true;
-        // printf("No Exit Date!\n");
+        return -2;
     }
-    else{
-        char *token;
-        int day1, day2, week1, week2, year1, year2;
+    if(strcmp(d1,"-")==0){
+        return -1;
+    }
+    else{   // none is -
+        char *token, *temp;
+        int day1, day2, month1, month2, year1, year2;
         
-        token = strtok(d1,"-");
+        temp = strdup(d1);
+        if(temp==NULL){
+            fprintf(stderr, "Couldn't allocate temp string. Abort...\n");
+            exit(1);
+        }
+
+        token = strtok(temp,"-");
         day1 = atoi(token);
 
         token = strtok(NULL,"-");
-        week1 = atoi(token);
+        month1 = atoi(token);
 
         token = strtok(NULL,"-\n \t");
         year1 = atoi(token);
+        // token = strtok(NULL,"-\n \t");
 
-        token = strtok(d2,"-");
+        free(temp);
+        temp = strdup(d2);
+        if(temp==NULL){
+            fprintf(stderr, "Couldn't allocate temp string. Abort...\n");
+            exit(1);
+        }
+
+        token = strtok(temp,"-");
         day2 = atoi(token);
         
         token = strtok(NULL,"-");
-        week2 = atoi(token);
+        month2 = atoi(token);
         
         token = strtok(NULL,"-\n \t");
         year2 = atoi(token);
+        // token = strtok(NULL,"-\n \t");
 
-        printf("Computed Date1 as %d-%d-%d\n", day1, week1, year1);
-        printf("Computed Date2 as %d-%d-%d\n", day2, week2, year2);
+        free(temp);
 
-        if(year2<year1){
-            return false;
+        // printf("Computed Date1 as %d-%d-%d\n", day1, month1, year1);
+        // printf("Computed Date2 as %d-%d-%d\n", day2, month2, year2);
+
+        if(year2>year1){
+            return 2;
         }
         else if(year2==year1){
-            if(week2<week1){
-                return false;
+            if(month2>month1){
+                return 2;
             }
-            else if(week2==week1){
-                if(day2<day1){
-                    return false;
+            else if(month2==month1){
+                if(day2>day1){
+                    return 2;
+                }
+                else if(day2==day1){
+                    return 0;
+                }
+                else{
+                    return 1;
                 }
             }
+            else{
+                return 1;
+            }
+        }
+        else{
+            return 1;
         }
     }
-
-
-    printf("\n");
-    return true;
-
 }

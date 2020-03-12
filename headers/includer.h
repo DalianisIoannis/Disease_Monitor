@@ -10,3 +10,4 @@
 #include "./patients.h"
 #include "./disMonitor.h"
 #include "./linkedList.h"
+#include "./AVL.h"

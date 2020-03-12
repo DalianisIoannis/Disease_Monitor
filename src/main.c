@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int main(int argc, char** argv){
-    printf("\nStart\n\n");
+    printf("\n\n");
 
     // int diseaseHashtableNumOfEntries,
     //     countryHashtableNumOfEntries,
@@ -14,6 +14,6 @@ int main(int argc, char** argv){
     }
     
     
-    printf("End\n\n");
+    printf("\n\n");
     return 0;
 }

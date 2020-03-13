@@ -10,6 +10,7 @@ typedef struct AVLNode{
 
     struct AVLNode *left;
     struct AVLNode *right;
+    int nodeHeight; // root is height 1
 
 } AVLNode;
 

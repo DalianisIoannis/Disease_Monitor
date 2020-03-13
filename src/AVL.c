@@ -7,19 +7,13 @@ AVLTreePtr initAVLTree(){
     if(tree==NULL){
         return NULL;
     }
-
     tree->root = NULL;
-
     return tree;
-
 }
 
-// Postorder deletion of all tree Nodes
-void emptyAVLnodes(AVLNodePtr node){
+void emptyAVLnodes(AVLNodePtr node){    // Postorder deletion of all tree Nodes
 
-    if(node==NULL){
-        return;
-    }
+    if(node==NULL){ return; }
     else{
         emptyAVLnodes(node->left);
         emptyAVLnodes(node->right);
@@ -27,7 +21,6 @@ void emptyAVLnodes(AVLNodePtr node){
         node->left = NULL;
         node->right = NULL;
         free(node);
-
     }
     return;
 }
@@ -35,12 +28,127 @@ void emptyAVLnodes(AVLNodePtr node){
 void emptyAVLTree(AVLTreePtr tree){
 
     emptyAVLnodes(tree->root);
-
     free(tree);
+}
+
+// void get_max_child_nodes(AVLNodePtr node, int *max){    // returns how many child nodes a node has but needs -1 in result
+//     if(node==NULL){
+//         return;
+//     }
+//     else{
+//         *max = *max + 1;
+//         get_max_child_nodes(node->left, max);
+//         get_max_child_nodes(node->right, max);
+
+//     }
+//     return;
+// }
+
+
+int ReturnNodeHeight(AVLNodePtr node){
+    if(node!=NULL){
+        return node->nodeHeight;
+    }
+    return 0;
+}
+
+void reduceNodeAndSubtreeHeight(AVLNodePtr node){
+    if(node==NULL){
+        return;
+    }
+    node->nodeHeight -= 1;
+    reduceNodeAndSubtreeHeight(node->left);
+    reduceNodeAndSubtreeHeight(node->right);
 
 }
 
+void increasNodeAndSubtreeHeight(AVLNodePtr node){
+    if(node==NULL){
+        return;
+    }
+    node->nodeHeight += 1;
+    reduceNodeAndSubtreeHeight(node->left);
+    reduceNodeAndSubtreeHeight(node->right);
+
+}
+
+// pairnoun ton mpampa kai einai deiktis gia patera
+AVLNodePtr LL_Rotation(AVLNodePtr old_father){
+    AVLNodePtr tmp = (old_father)->right;
+
+    (old_father)->right = tmp->left;
+    tmp->left = (old_father);
+
+    increasNodeAndSubtreeHeight(tmp->left->left);
+    if(tmp->left!=NULL){
+        tmp->left->nodeHeight += 1;
+    }
+    reduceNodeAndSubtreeHeight(tmp->right);
+    tmp->nodeHeight -= 1;
+    return tmp;
+
+}
+
+AVLNodePtr RR_Rotation(AVLNodePtr old_father){
+    AVLNodePtr tmp = (old_father)->left;
+
+    (old_father)->left = tmp->right;
+    tmp->right = (old_father);
+
+    increasNodeAndSubtreeHeight(tmp->right->right);
+    if(tmp->right!=NULL){
+        tmp->right->nodeHeight += 1;
+    }
+    reduceNodeAndSubtreeHeight(tmp->left);
+    tmp->nodeHeight -= 1;
+    return tmp;
+}
+
+AVLNodePtr LR_Rotation(AVLNodePtr old_father){
+
+    AVLNodePtr tmp = (old_father)->left;
+    (old_father)->left = tmp->right->right;
+    AVLNodePtr tmp2 = tmp->right;
+    tmp->right = tmp->right->left;
+    tmp2->left = tmp;
+    tmp2->right = old_father;
+
+    reduceNodeAndSubtreeHeight(tmp2->left->right);
+    reduceNodeAndSubtreeHeight(tmp2->right->left);
+    increasNodeAndSubtreeHeight(tmp2->right->right);
+    if(tmp2->right!=NULL){
+        tmp2->right->nodeHeight += 1;
+    }
+    tmp2->nodeHeight -= 2;
+
+    return tmp2;
+}
+
+AVLNodePtr RL_Rotation(AVLNodePtr old_father){
+
+    AVLNodePtr tmp = (old_father)->right;
+    (old_father)->right = tmp->left->left;
+    AVLNodePtr tmp2 = tmp->left;
+    tmp->left = tmp->left->right;
+    tmp2->right = tmp;
+    tmp2->left = old_father;
+
+    reduceNodeAndSubtreeHeight(tmp2->right->left);
+    reduceNodeAndSubtreeHeight(tmp2->left->right);
+    increasNodeAndSubtreeHeight(tmp2->left->left);
+    if(tmp2->left!=NULL){
+        tmp2->left->nodeHeight += 1;
+    }
+    tmp2->nodeHeight -= 2;
+
+    return tmp2;
+}
+
+
 bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
+
+    // int temp;
+    int balance;
 
     if( (*existent)==NULL ){
         (*existent) = (*added);
@@ -54,22 +162,69 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
 
         if(comparer==0 || comparer==2){
             // goes to the right
-            printf("For existing %s and added %s we go right\n", (*existent)->item->entryDate, (*added)->item->entryDate);
+            // printf("For existing %s and added %s we go right\n", (*existent)->item->entryDate, (*added)->item->entryDate);
             compareAdd( &(*existent)->right, &(*added));
-
         }
         else if(comparer==1){
             // goes to the left
-            printf("For existing %s and added %s we go left\n", (*existent)->item->entryDate, (*added)->item->entryDate);
+            // printf("For existing %s and added %s we go left\n", (*existent)->item->entryDate, (*added)->item->entryDate);
             compareAdd( &(*existent)->left, &(*added));
-
         }
-        else{
-            // -1 or -2
+        else{   // -1 or -2
             printf("For existing %s and added %s we are in third\n", (*existent)->item->entryDate, (*added)->item->entryDate);
             free(*added);
             return false;
         }
+
+        (*added)->nodeHeight += 1;   // update height
+        balance = ReturnNodeHeight((*existent)->right) - ReturnNodeHeight((*existent)->left);
+
+        int newcompare, does_it_have_at_least_one_not_NULL_child=18;
+        if( (*existent)->right==NULL ){
+            newcompare = 19;
+        }
+        else{
+            newcompare = compareDates( (*existent)->right->item->entryDate,  (*added)->item->entryDate);
+            if( (*existent)->right->right!=NULL || (*existent)->right->left!=NULL ){
+                does_it_have_at_least_one_not_NULL_child = 1;
+            }
+            else{
+                does_it_have_at_least_one_not_NULL_child = 0;
+            }
+        }
+
+        if( balance>=2 && (newcompare==0 || newcompare==2) && does_it_have_at_least_one_not_NULL_child==1 ){
+            printf("Gia tin %s me eisodo %s thelei LL\n", (*existent)->item->entryDate, (*added)->item->entryDate);
+            (*existent) = LL_Rotation( (*existent) );
+            // printf("MPOMPA\n");
+        }
+        if( balance>=2 && newcompare==1 && does_it_have_at_least_one_not_NULL_child==1 ){
+            printf("Gia tin %s me eisodo %s thelei RL\n", (*existent)->item->entryDate, (*added)->item->entryDate);
+            (*existent) = RL_Rotation( (*existent) );
+        }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if( (*existent)->left==NULL ){
+            newcompare = 19;
+        }
+        else{
+            newcompare = compareDates( (*existent)->left->item->entryDate,  (*added)->item->entryDate);
+            if( (*existent)->left->right!=NULL || (*existent)->left->left!=NULL ){
+                does_it_have_at_least_one_not_NULL_child = 1;
+            }
+            else{
+                does_it_have_at_least_one_not_NULL_child = 0;
+            }
+        }
+
+        if( balance<=-2 && newcompare==1 && does_it_have_at_least_one_not_NULL_child==1 ){
+            printf("Gia tin %s me eisodo %s thelei RR\n", (*existent)->item->entryDate, (*added)->item->entryDate);
+            (*existent) = RR_Rotation( (*existent) );
+        }
+        if( balance<=-2 && (newcompare==0 || newcompare==2) && does_it_have_at_least_one_not_NULL_child==1 ){
+            printf("Gia tin %s me eisodo %s thelei LR\n", (*existent)->item->entryDate, (*added)->item->entryDate);
+            (*existent) = LR_Rotation( (*existent) );
+        }
+    
     }
 
     return true;
@@ -80,6 +235,7 @@ bool addAVLNode(AVLTreePtr tree, patientRecord pR){
     AVLNodePtr node = malloc(sizeof(AVLNode));
     if(node==NULL){ return false; }
     node->item = pR;
+    node->nodeHeight = 1;
 
     if( !compareAdd( &(tree->root), &node ) ){
         fprintf(stderr, "Couldn't add node in AVL. Abort...\n");
@@ -93,9 +249,8 @@ bool addAVLNode(AVLTreePtr tree, patientRecord pR){
 void recPrintAVLNode(AVLNodePtr node, int space){
 
     int i;
-
     if(node==NULL){
-        space += 10;
+        space += 10;    // 16
         for(i=10; i<space; i++){
             printf(" ");
         }
@@ -103,7 +258,7 @@ void recPrintAVLNode(AVLNodePtr node, int space){
         return;
     }
 
-    space += 10;
+    space += 10;    // 16
     recPrintAVLNode(node->right, space);
 
     printf("\n");
@@ -111,8 +266,8 @@ void recPrintAVLNode(AVLNodePtr node, int space){
         printf(" ");
     }
     
+    // printf("%s H %d\n", node->item->entryDate, node->nodeHeight);
     printf("%s\n", node->item->entryDate);
-    // printf("%s\n", node->item->recordId);
 
     recPrintAVLNode(node->left, space);
 }
@@ -120,5 +275,4 @@ void recPrintAVLNode(AVLNodePtr node, int space){
 void printAVLTree(AVLTreePtr tree){
 
     recPrintAVLNode(tree->root, 0);
-
 }

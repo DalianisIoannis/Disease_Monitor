@@ -31,7 +31,7 @@ bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
 
     while(tmp!=NULL){
 
-        printf("Inputiing to AVL %s\n", tmp->item->recordId);
+        printf("Inputiing to AVL %s\n", tmp->item->entryDate);
 
         if(!addAVLNode(AVL_Tree, tmp->item)){
             return false;
@@ -58,28 +58,24 @@ bool disMonitor(){
     while( (read=getline(&line, &len, file))!=-1 ){
         
         // printf("\nFile line is %s", line);
-        
         patientRecord a = initRecord(line);
         if(a==NULL){
             fprintf(stderr, "Couldn't allocate patientRecord. Abort...\n");
             return false;
         }
-        //check if dates are ok
-        if( compareDates(a->entryDate, a->exitDate)==1 ){
+        if( compareDates(a->entryDate, a->exitDate)==1 ){   //check if dates are ok
             printf("Patient with recordId %s has wrong dates. Rejected!\n", a->recordId);
             deleteRecord(&a);
             continue;
         }
-
         // addNode(&Entries, &a);
         if(!addNode(&Entries, a)){
             fprintf(stderr, "Couldn't add Linked List node. Abort...\n");
             return false;
         }
-
     }
 
-    printLinkedList(Entries);
+    // printLinkedList(Entries);
 
     // AVL
     if( (AVL_Tree = initAVLTree())==NULL ){

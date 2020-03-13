@@ -32,7 +32,6 @@ typedef AVLTree *AVLTreePtr;
 
 AVLTreePtr initAVLTree();
 
-// void emptyAVLTree(AVLTreePtr*);
 void emptyAVLTree(AVLTreePtr);
 
 void emptyAVLnodes(AVLNodePtr);
@@ -47,18 +46,12 @@ void recPrintAVLNode(AVLNodePtr, int);
 
 void performRotations(AVLNodePtr*, AVLNodePtr*);
 
-AVLNodePtr LL_Rotation(AVLNodePtr);
-
-AVLNodePtr LL_Rotation(AVLNodePtr);
-
-AVLNodePtr LR_Rotation(AVLNodePtr);
-
-AVLNodePtr RL_Rotation(AVLNodePtr);
-
-void increasNodeAndSubtreeHeight(AVLNodePtr);
-
-void reduceNodeAndSubtreeHeight(AVLNodePtr);
-
 int ReturnNodeHeight(AVLNodePtr);
 
 void get_child_nodes(AVLNodePtr, int*);   // implemented but not used
+
+AVLNodePtr rotateNodeRight(AVLNodePtr);
+
+AVLNodePtr rotateNodeLeft(AVLNodePtr);
+
+int getBalanceFactor(AVLNodePtr);

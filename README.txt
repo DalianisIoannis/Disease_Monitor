@@ -31,57 +31,8 @@ subtree ενός κόμβου πρέπει και το balance factor να έχ�
 δοκιμές αλλά δε χρησιμοποιείται για την εργασία.
 
 
-
-
-
-
-
-
-
-
-
-
-
-91 Nikolakis Stokos MERS-COV China 28-05-2008 25-08-2008
-67 Richard Williams COVID-2019 France 02-02-2003 01-06-2013
-28 Crystal Stokes FLU-2018 Switzerland 26-03-2005 18-07-2019
-36 Paris Pakis SARS-1 Uganda 07-09-2008 10-12-2007
-40 Dylan Webb SARS-1 Australia 15-06-2000 05-01-2015
-4 Makis Makakis MERS-COV Australia 03-07-2006 16-02-2006
-84 Julie Martin SARS-COV-2 Australia 10-07-2008 15-12-2016
-78 Timothy Prince FLU-2018 Germany 11-09-2001 10-12-2013
-91 Jasmin Gomez MERS-COV China 28-05-2008 25-08-2008
-23 Tanya Huang SARS-1 USA 07-09-2006 10-12-2007
-33 Daniel Olsen H1N1 Italy 20-11-2003 31-08-2011
-46 Whitney Taylor COVID-2019 Switzerland 12-08-2007 15-09-2012
-1 Andrea Rosario EVD Vietnam 06-09-2002 22-01-2012
-50 Kathryn Todd FLU-2018 Germany 15-02-2000 07-09-2015
-52 Amanda Osborn SARS-COV-2 France 08-12-2005 -
-80 Maurice Mason MERS-COV Egypt 10-06-2010 13-11-2019
-88 Scott Brown H1N1 France 25-04-2003 07-06-2019
-1 Giannis Kostas EVD Vietnam 06-09-2002 22-01-2012
-86 Mike Bazovski MERS-COV Egypt 10-06-2010 13-06-2010
-33 Paris Pakis SARS-1 USA 11-12-2007 10-12-2007
-8220 Phillip Luna MERS-COV Switzerland 06-03-2005 29-05-2005
-296 Rebecca Holden FLU-2018 Switzerland 03-08-2012 10-10-2015
-5012 Joseph Jones EVD Denmark 15-11-2005 02-08-2008
-6017 Lauren Hamilton COVID-2019 France 18-05-2012 31-12-2012
-143 Donald James SARS-1 Greece 03-03-2001 17-09-2003
-6005 Glenda Miller FLU-2018 Argentina 22-08-2014 -
-5007 Robert Stanley H1N1 Egypt 10-03-2003 28-07-2014
-3013 Paul Oneill COVID-2019 Argentina 27-02-2005 23-09-2015
-8748 Sheila Brown SARS-COV-2 France 06-12-2001 15-09-2018
-2163 Amber Johnson EVD Denmark 12-09-2007 15-04-2017
-4303 Emily Lucas MERS-COV Denmark 07-10-2000 01-09-2004
-3478 Bradley Gomez MERS-COV Russia 07-10-2010 13-05-2011
-
-
-
-
-
-
-
-
-ΤΟ ΤΕΛΙΚΟ ΜΟΥ ΘΑ ΕΙΝΑΙ ΤΟ AVL
-ΟΤΙ ΚΑΙΝΟΥΡΙΟ ΓΡΑΦΩ ΤΟ ΓΡΑΦΩ ΣΤΟ AVL ΤΟ ΠΕΡΝΩ ΣΤΟ FINAL ΚΑΙ ΜΕΤΑ ΤΟ
-ΔΟΚΙΜΑΖΩ ΚΑΙ ΜΕΤΑ ΤΟ ΑΦΗΝΩ ΣΤΟ AVL
+Η ρίζα έχει nodeHeight το πλήθος των επιπέδων. Άρα το τελευταίο παιδί κάθε υποδέντρου έχει
+nodeHeight 1. To nodeHeight κάθε κόμβου του AVL χρησιμεύει μόνο για τα rotations. Δεν
+είναι πάντα το σωστό γιατί μπορεί πχ το δέντρο κάποια στιγμή να είναι πλήρως ισορροπημένο και
+μετά να εισαχθεί ένας κόμβος. Το nodeHeight του κόμβου και όλων των προκατόχων του θα αλλάξει
+αλλά όχι και των γειτονικών υποδέντρων.

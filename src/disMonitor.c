@@ -22,7 +22,6 @@ void emptyMonitor(FILE **f, Linked_List *ll, char** line){
     free(*line);
     free(*ll);
     fclose(*f);
-
 }
 
 bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
@@ -46,7 +45,6 @@ bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
 int returnMaxInt(int a, int b){
     if(a>=b){ return a; }
     return b;
-
 }
 
 bool disMonitor(){
@@ -63,7 +61,6 @@ bool disMonitor(){
 
     while( (read=getline(&line, &len, file))!=-1 ){
         
-        // printf("\nFile line is %s", line);
         patientRecord a = initRecord(line);
         if(a==NULL){
             fprintf(stderr, "Couldn't allocate patientRecord. Abort...\n");
@@ -74,7 +71,6 @@ bool disMonitor(){
             deleteRecord(&a);
             continue;
         }
-        // addNode(&Entries, &a);
         if(!addNode(&Entries, a)){
             fprintf(stderr, "Couldn't add Linked List node. Abort...\n");
             return false;

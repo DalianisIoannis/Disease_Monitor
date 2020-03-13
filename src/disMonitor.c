@@ -31,7 +31,7 @@ bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
 
     while(tmp!=NULL){
 
-        printf("Inputiing to AVL %s\n", tmp->item->entryDate);
+        printf("\n\n\n\n\nInputiing to AVL %s\n", tmp->item->entryDate);
 
         if(!addAVLNode(AVL_Tree, tmp->item)){
             return false;
@@ -41,6 +41,12 @@ bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
     }
 
     return true;
+}
+
+int returnMaxInt(int a, int b){
+    if(a>=b){ return a; }
+    return b;
+
 }
 
 bool disMonitor(){
@@ -86,6 +92,7 @@ bool disMonitor(){
         fprintf(stderr, "Couldn't fill AVL tree. Abort...\n");
         return false;
     }
+    printf("\n\n\n\nTELIKO\n\n\n");
     printAVLTree(AVL_Tree);
     emptyAVLTree(AVL_Tree);
 

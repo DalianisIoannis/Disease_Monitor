@@ -10,3 +10,5 @@ bool disMonitor();
 // void emptyMonitor(FILE**, Linked_List*, char**);
 
 int compareDates(char*, char*);
+
+int returnMaxInt(int, int);

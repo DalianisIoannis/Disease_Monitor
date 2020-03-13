@@ -34,9 +34,6 @@ bool addNode(Linked_List *ll, patientRecord pR){
     listNode llNode = malloc(sizeof(lNode));
     if(llNode==NULL){ return false; }
     
-    // llNode->item = malloc(sizeof(pRecord));
-    // if(llNode->item==NULL){ return false; }
-    // memcpy(llNode->item, (pR), sizeof(pRecord));
     llNode->item = pR;
 
     if( (*ll)->front==NULL ){   // empty list

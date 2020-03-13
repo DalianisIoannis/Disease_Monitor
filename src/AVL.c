@@ -18,6 +18,7 @@ void emptyAVLnodes(AVLNodePtr node){    // Postorder deletion of all tree Nodes
         emptyAVLnodes(node->left);
         emptyAVLnodes(node->right);
 
+        node->item  = NULL; 
         node->left  = NULL;
         node->right = NULL;
         free(node);
@@ -196,7 +197,6 @@ void recPrintAVLNode(AVLNodePtr node, int space){
     
     // printf("%s H %d\n", node->item->entryDate, node->nodeHeight);
     printf("%s\n", node->item->entryDate);
-    // printf("%s max %d\n", node->item->entryDate, get_max_height_of_tree(node));
 
     recPrintAVLNode(node->left, space);
 }

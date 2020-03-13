@@ -10,7 +10,7 @@ patientRecord initRecord(char* line){
         return NULL;
     }
 
-    token = strtok(line," ");
+    token = strtok(line," \t");
     p->recordId = strdup(token);
     if(p->recordId==NULL){
         return NULL;

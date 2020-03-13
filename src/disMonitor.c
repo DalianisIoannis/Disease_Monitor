@@ -29,17 +29,31 @@ bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
     listNode tmp = Entries->front;
 
     while(tmp!=NULL){
-
-        printf("\n\n\n\n\nInputiing to AVL %s\n", tmp->item->entryDate);
-
         if(!addAVLNode(AVL_Tree, tmp->item)){
             return false;
         }
-
         tmp = tmp->next;
     }
 
     return true;
+}
+
+void inputLLtoCountList(Linked_List Entries, cList cl, int date_coun){
+
+    listNode tmp = Entries->front;
+    while(tmp!=NULL){
+        if(date_coun==0){   // disease
+            if( !addcNode(&(cl->start), tmp->item->diseaseID, &(cl->count)) ){
+                // printf("Disease \t%s\t\thas been found again.\n", tmp->item->diseaseID);
+            }
+        }
+        else{               // country
+            if( !addcNode(&(cl->start), tmp->item->country, &(cl->count)) ){
+                // printf("Country \t%s\t\thas been found again.\n", tmp->item->country);
+            }
+        }
+        tmp = tmp->next;
+    }
 }
 
 int returnMaxInt(int a, int b){
@@ -53,7 +67,6 @@ bool disMonitor(){
     __ssize_t read;
     char *line = NULL;
     Linked_List Entries;
-    AVLTreePtr AVL_Tree;
 
     if(!initMonitor(&file, &Entries)){
         return false;
@@ -77,9 +90,10 @@ bool disMonitor(){
         }
     }
 
-    // printLinkedList(Entries);
+    printLinkedList(Entries);
 
     // AVL
+    AVLTreePtr AVL_Tree;
     if( (AVL_Tree = initAVLTree())==NULL ){
             fprintf(stderr, "Couldn't allocate AVL Tree. Abort...\n");
             return false;
@@ -88,9 +102,25 @@ bool disMonitor(){
         fprintf(stderr, "Couldn't fill AVL tree. Abort...\n");
         return false;
     }
-    printf("\n\n\n\nTELIKO\n\n\n");
     printAVLTree(AVL_Tree);
     emptyAVLTree(AVL_Tree);
+
+    // count different viruses
+    cList countList;
+    countList = initcList();
+    inputLLtoCountList(Entries, countList, 0);
+    int diff_diseases = countList->count;
+    printf("\nPrint countList with %d diseases.\n", diff_diseases);
+    printcList(countList->start);
+    deletecList(&countList);
+
+    // count different countries
+    countList = initcList();
+    inputLLtoCountList(Entries, countList, 1);
+    int diff_countries = countList->count;
+    printf("\nPrint countList with %d countries.\n", diff_countries);
+    printcList(countList->start);
+    deletecList(&countList);
 
     emptyMonitor(&file, &Entries, &line);
 
@@ -129,7 +159,6 @@ int compareDates(char *d1, char *d2){
 
         token = strtok(NULL,"-\n \t");
         year1 = atoi(token);
-        // token = strtok(NULL,"-\n \t");
 
         free(temp);
         temp = strdup(d2);
@@ -146,7 +175,6 @@ int compareDates(char *d1, char *d2){
         
         token = strtok(NULL,"-\n \t");
         year2 = atoi(token);
-        // token = strtok(NULL,"-\n \t");
 
         free(temp);
 

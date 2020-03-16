@@ -1,23 +1,19 @@
 #include "../headers/includer.h"
 
 bool initMonitor(FILE **f, Linked_List *ll){    // ll is lList**
-
     *f = fopen("Assets/patientRecordsFile.txt","r");
     if((*f)==NULL){
         fprintf(stderr, "Couldn't open txt file. Abort...\n");
         return false;
     }
-
     *ll = initlinkedList();
     if((*ll)==NULL){
         return false;
     }
-
     return true;
 }
 
 void emptyMonitor(FILE **f, Linked_List *ll, char** line){
-
     emptyLinkedList(ll);
     free(*line);
     free(*ll);
@@ -25,35 +21,25 @@ void emptyMonitor(FILE **f, Linked_List *ll, char** line){
 }
 
 bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
-
     listNode tmp = Entries->front;
-
     while(tmp!=NULL){
         if(!addAVLNode(AVL_Tree, tmp->item)){
             return false;
         }
         tmp = tmp->next;
     }
-
     return true;
 }
 
-void inputLLtoCountList(Linked_List Entries, cList cl, int date_coun){
-
+bool inputLLtoHT(Linked_List Entries, HashTable HT_in, int ind){
     listNode tmp = Entries->front;
     while(tmp!=NULL){
-        if(date_coun==0){   // disease
-            if( !addcNode(&(cl->start), tmp->item->diseaseID, &(cl->count)) ){
-                // printf("Disease \t%s\t\thas been found again.\n", tmp->item->diseaseID);
-            }
-        }
-        else{               // country
-            if( !addcNode(&(cl->start), tmp->item->country, &(cl->count)) ){
-                // printf("Country \t%s\t\thas been found again.\n", tmp->item->country);
-            }
+        if(!addHT(HT_in, tmp->item, ind)){
+            return false;
         }
         tmp = tmp->next;
     }
+    return true;
 }
 
 int returnMaxInt(int a, int b){
@@ -61,7 +47,79 @@ int returnMaxInt(int a, int b){
     return b;
 }
 
-bool disMonitor(){
+char* takeString(FILE *fp, size_t size){
+    char *str;
+    int ch;
+    size_t len = 0;
+    str = realloc(NULL, sizeof(char)*size);
+    if(!str) return str;
+    while( EOF!=(ch=fgetc(fp)) && ch!='\n' ){
+        str[len++] = ch;
+        if(len==size){
+            str = realloc(str, sizeof(char)*(size+=16));
+            if(!str) return str;
+        }
+    }
+    str[len++]='\0';
+    return realloc(str, sizeof(char)*len);
+}
+
+void Querries(HashTable HT_disease, HashTable HT_country){
+
+    char *inputString = NULL;
+    char *tmp, *ind1, *ind2, *instruct, *ind3, *ind4;
+
+    printf("Select.\n");
+    inputString = takeString(stdin, 10);
+
+    while(strcmp(inputString, "exit")!=0){
+        tmp = strdup(inputString);
+        if(tmp==NULL){
+            printf("String failure.\n");
+            return;
+        }
+        instruct = strtok(tmp," \n\t");
+        ind1 = strtok(NULL," \n\t");
+        ind2 = strtok(NULL," \n\t");
+        ind3 = strtok(NULL," \n\t");
+        ind4 = strtok(NULL," \n\t");
+        printf("Instruction %s, ind1 %s, ind2 %s, ind3 %s, ind4 %s.\n", instruct, ind1, ind2, ind3, ind4);
+
+        if(strcmp(instruct, "globalDiseaseStats")==0){
+            if(ind1!=NULL && ind2==NULL){ 
+                printf("Both dates should be either NULL or not NULL.\n");
+            }
+            else{
+                globalDiseaseStats(HT_disease, ind1, ind2);
+            }
+        }
+        else if(strcmp(instruct, "topk-Diseases")==0){
+            if(ind1==NULL || ind2==NULL){
+                printf("Need to provide k and country.\n");
+            }
+            else if(ind3!=NULL && ind4==NULL){ 
+                printf("Both dates should be either NULL or not NULL.\n");
+            }
+            else{
+                topk_Diseases(HT_country, ind1, ind2, ind3, ind4);
+            }
+        }
+        else{
+            printf("Not such instruction exists.\n");
+        }
+
+        free(tmp);
+        free(inputString);
+
+        printf("Select.\n");
+        inputString = takeString(stdin, 10);
+    }
+    
+    free(inputString);
+    return;
+}
+
+bool disMonitor(int diseaseHashtableNumOfEntries, int countryHashtableNumOfEntries, int bucketSize){
     FILE* file;
     size_t len = 0;
     __ssize_t read;
@@ -90,38 +148,52 @@ bool disMonitor(){
         }
     }
 
-    printLinkedList(Entries);
+    // printLinkedList(Entries);
 
     // AVL
-    AVLTreePtr AVL_Tree;
-    if( (AVL_Tree = initAVLTree())==NULL ){
-            fprintf(stderr, "Couldn't allocate AVL Tree. Abort...\n");
-            return false;
-        }
-    if(!inputLLtoAVL(Entries, AVL_Tree)){
-        fprintf(stderr, "Couldn't fill AVL tree. Abort...\n");
+    // AVLTreePtr AVL_Tree;
+    // if( (AVL_Tree = initAVLTree())==NULL ){
+    //     fprintf(stderr, "Couldn't allocate AVL Tree. Abort...\n");
+    //     return false;
+    // }
+    // if(!inputLLtoAVL(Entries, AVL_Tree)){
+    //     fprintf(stderr, "Couldn't fill AVL tree. Abort...\n");
+    //     return false;
+    // }
+    // printAVLTree(AVL_Tree);
+    // emptyAVLTree(AVL_Tree);
+
+    // Hash Table with disease
+    printf("\n");
+    HashTable HT_disease;
+    if( (HT_disease = initHashTable(bucketSize, diseaseHashtableNumOfEntries))==NULL ){
+        fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
+        emptyMonitor(&file, &Entries, &line);
         return false;
     }
-    printAVLTree(AVL_Tree);
-    emptyAVLTree(AVL_Tree);
+    inputLLtoHT(Entries, HT_disease, 0);    // 0 for disease
+    printHashTable(HT_disease);
+    //
 
-    // count different viruses
-    cList countList;
-    countList = initcList();
-    inputLLtoCountList(Entries, countList, 0);
-    int diff_diseases = countList->count;
-    printf("\nPrint countList with %d diseases.\n", diff_diseases);
-    printcList(countList->start);
-    deletecList(&countList);
+    // Hash Table with country
+    printf("\n");
+    HashTable HT_country;
+    if( (HT_country = initHashTable(bucketSize, countryHashtableNumOfEntries))==NULL ){
+        fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
+        emptyMonitor(&file, &Entries, &line);
+        return false;
+    }
+    inputLLtoHT(Entries, HT_country, 1);    // 0 for disease
+    printHashTable(HT_country);
+    // 
 
-    // count different countries
-    countList = initcList();
-    inputLLtoCountList(Entries, countList, 1);
-    int diff_countries = countList->count;
-    printf("\nPrint countList with %d countries.\n", diff_countries);
-    printcList(countList->start);
-    deletecList(&countList);
 
+    // querries
+    Querries(HT_disease, HT_country);
+
+
+    deleteHT(HT_disease);
+    deleteHT(HT_country);
     emptyMonitor(&file, &Entries, &line);
 
     return true;
@@ -177,10 +249,8 @@ int compareDates(char *d1, char *d2){
         year2 = atoi(token);
 
         free(temp);
-
         // printf("Computed Date1 as %d-%d-%d\n", day1, month1, year1);
         // printf("Computed Date2 as %d-%d-%d\n", day2, month2, year2);
-
         if(year2>year1){
             return 2;
         }

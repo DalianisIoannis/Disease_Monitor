@@ -48,10 +48,18 @@ void performRotations(AVLNodePtr*, AVLNodePtr*);
 
 int ReturnNodeHeight(AVLNodePtr);
 
-void get_child_nodes(AVLNodePtr, int*);   // implemented but not used
+void get_child_nodes(AVLNodePtr, int*, char*, char*);
 
 AVLNodePtr rotateNodeRight(AVLNodePtr);
 
 AVLNodePtr rotateNodeLeft(AVLNodePtr);
 
 int getBalanceFactor(AVLNodePtr);
+
+void RR_rotation(AVLNodePtr*);
+
+void LL_rotation(AVLNodePtr*);
+
+void RL_Rotation(AVLNodePtr*);
+
+void LR_Rotation(AVLNodePtr*);

@@ -12,7 +12,7 @@ EXECUTABLE = diseaseMonitor
 _DEPS = includer.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o disMonitor.o linkedList.o patients.o AVL.o counterList.o
+_OBJ = main.o disMonitor.o linkedList.o patients.o AVL.o HashTable.o MaxHeap.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)

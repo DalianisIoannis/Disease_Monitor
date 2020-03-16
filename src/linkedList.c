@@ -55,7 +55,6 @@ bool addNode(Linked_List *ll, patientRecord pR){
         }
     }
     
-    // free(pR);
     return true;
 }
 

@@ -2,8 +2,6 @@
 
 patientRecord initRecord(char* line){
 
-    // printf("File INSIDE line is %s", line); // last line without \n
-    
     char *token;
     patientRecord p = malloc(sizeof(pRecord));
     if(p==NULL){
@@ -77,7 +75,7 @@ void printRecord(patientRecord p){
 
 void deleteRecord(patientRecord* p){
 
-    printf("\tDelete patient with RecordId %s\n", (*p)->recordId);
+    // printf("\tDelete patient with RecordId %s\n", (*p)->recordId);
 
     free( (*p)->recordId );
     free( (*p)->patientFirstName );

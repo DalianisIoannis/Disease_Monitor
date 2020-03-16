@@ -3,7 +3,7 @@
 #include "../headers/includer.h"
 #include "../headers/linkedList.h"
 
-bool disMonitor();
+bool disMonitor(int, int, int);
 
 // bool initMonitor(FILE**, Linked_List*);
 

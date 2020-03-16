@@ -6,7 +6,6 @@ MaxHeapPtr initMaxHeap(){
         return NULL;
     }
     tree->root = NULL;
-    tree->heapHeight = 0;
     return tree;
 }
 
@@ -43,8 +42,12 @@ void printMaxHeapNode(HeapNodePtr node, int space){
     for(i=10; i<space; i++){
         printf(" ");
     }
-    printf("%s, %d\n", node->occurence, node->total);
-
+    if( strcmp(node->occurence, "$$$$$$$$$$$")!=0 ){
+        printf("%s, %d\n", node->occurence, node->total);
+    }
+    else{
+        printf("NULL");
+    }
     printMaxHeapNode(node->left, space);
 }
 
@@ -52,13 +55,13 @@ void printMaxHeapTree(MaxHeapPtr tree){
     printMaxHeapNode(tree->root, 0);
 }
 
-// adds bigger 
+// incresases total of occurences 
 bool searchAllexisting(HeapNodePtr *father, char *item){
     if( (*father)==NULL ){
         return false;
     }
     else{
-        printf("Compare %s with %s\n", (*father)->occurence, item);
+        // printf("Compare %s with %s\n", (*father)->occurence, item);
         if( strcmp( (*father)->occurence, item )==0 ){
             (*father)->total++;
             return true;
@@ -72,22 +75,6 @@ bool searchAllexisting(HeapNodePtr *father, char *item){
     }
     return false;
 }
-
-// HeapNodePtr returnLeftMostNonEmpty(HeapNodePtr root){
-//     HeapNodePtr tmp = root;
-//     while(tmp->left!=NULL){
-//         tmp = tmp->left;
-//     }
-//     return tmp;
-// }
-
-// HeapNodePtr returnFirstEmpty(HeapNodePtr node){//, int height){//}, int *i_have_reached){
-//     if(node==NULL){
-//         return node;
-//     }
-//     return returnFirstEmpty(node->left);//, height);
-//     return returnFirstEmpty(node->right);//, height);
-// }
 
 void findParentOfInsertedNode(HeapNodePtr node, int insId, HeapNodePtr *father){
     if( node->id==(insId/2) ){
@@ -131,8 +118,6 @@ void compareFatherWithChild(HeapNodePtr *father, HeapNodePtr *child){
         tmpStr = (*father)->occurence;
         (*father)->occurence = (*child)->occurence;
         (*child)->occurence = tmpStr;
-
-
     }
 }
 
@@ -167,10 +152,25 @@ void reheapify(HeapNodePtr *node){
             compareFatherWithChild( node, &((*node)->left) );
         }
     }
-
 }
 
-bool addMaxHeapNode(MaxHeapPtr tree, char *item, HeapNodePtr *last, int *id){
+void printKlargestItems(MaxHeapPtr tree, int k){
+    printf("I am going to print the %d largest items of Heap:\n", k);
+    printMaxHeapTree(tree);
+    printf("\nPrinted Max Heap.\n");
+    int began = k;
+    while(k>0 && tree->root!=NULL){
+        if( strcmp(tree->root->occurence, "$$$$$$$$$$$")!=0 ){
+            printf("%dth\tmost common occurence is %s\t with %d\tincidents.\n", began-k+1, tree->root->occurence, tree->root->total);
+        }
+        tree->root->occurence = "$$$$$$$$$$$";
+        tree->root->total = 0;
+        reheapify( &(tree->root) );
+        k--;
+    }
+}
+
+bool addMaxHeapNode(MaxHeapPtr tree, char *item, int *id){
 
 
     if( searchAllexisting( &(tree->root), item )==true ){
@@ -191,6 +191,5 @@ bool addMaxHeapNode(MaxHeapPtr tree, char *item, HeapNodePtr *last, int *id){
         insertNodetoMaxHeap( &(tree->root), node );
         (*id)++;
     }
-
     return true;
 }

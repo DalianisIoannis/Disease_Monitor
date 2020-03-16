@@ -20,16 +20,16 @@ void emptyMonitor(FILE **f, Linked_List *ll, char** line){
     fclose(*f);
 }
 
-bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
-    listNode tmp = Entries->front;
-    while(tmp!=NULL){
-        if(!addAVLNode(AVL_Tree, tmp->item)){
-            return false;
-        }
-        tmp = tmp->next;
-    }
-    return true;
-}
+// bool inputLLtoAVL(Linked_List Entries, AVLTreePtr AVL_Tree){
+//     listNode tmp = Entries->front;
+//     while(tmp!=NULL){
+//         if(!addAVLNode(AVL_Tree, tmp->item)){
+//             return false;
+//         }
+//         tmp = tmp->next;
+//     }
+//     return true;
+// }
 
 bool inputLLtoHT(Linked_List Entries, HashTable HT_in, int ind){
     listNode tmp = Entries->front;
@@ -69,9 +69,8 @@ void Querries(HashTable HT_disease, HashTable HT_country){
     char *inputString = NULL;
     char *tmp, *ind1, *ind2, *instruct, *ind3, *ind4;
 
-    printf("Select.\n");
+    printf("Select instruction.\n");
     inputString = takeString(stdin, 10);
-
     while(strcmp(inputString, "exit")!=0){
         tmp = strdup(inputString);
         if(tmp==NULL){
@@ -83,7 +82,7 @@ void Querries(HashTable HT_disease, HashTable HT_country){
         ind2 = strtok(NULL," \n\t");
         ind3 = strtok(NULL," \n\t");
         ind4 = strtok(NULL," \n\t");
-        printf("Instruction %s, ind1 %s, ind2 %s, ind3 %s, ind4 %s.\n", instruct, ind1, ind2, ind3, ind4);
+        printf("Instruction %s %s %s %s %s.\n", instruct, ind1, ind2, ind3, ind4);
 
         if(strcmp(instruct, "globalDiseaseStats")==0){
             if(ind1!=NULL && ind2==NULL){ 
@@ -93,7 +92,7 @@ void Querries(HashTable HT_disease, HashTable HT_country){
                 globalDiseaseStats(HT_disease, ind1, ind2);
             }
         }
-        else if(strcmp(instruct, "topk-Diseases")==0){
+        else if( strcmp(instruct, "topk-Diseases" )==0){
             if(ind1==NULL || ind2==NULL){
                 printf("Need to provide k and country.\n");
             }
@@ -101,20 +100,28 @@ void Querries(HashTable HT_disease, HashTable HT_country){
                 printf("Both dates should be either NULL or not NULL.\n");
             }
             else{
-                topk_Diseases(HT_country, ind1, ind2, ind3, ind4);
+                topk(HT_country, ind1, ind2, ind3, ind4, true);
+            }
+        }
+        else if( strcmp(instruct, "topk-Countries")==0 ){
+            if(ind1==NULL || ind2==NULL){
+                printf("Need to provide k and disease.\n");
+            }
+            else if(ind3!=NULL && ind4==NULL){ 
+                printf("Both dates should be either NULL or not NULL.\n");
+            }
+            else{
+                topk(HT_disease, ind1, ind2, ind3, ind4, false);
             }
         }
         else{
             printf("Not such instruction exists.\n");
         }
-
         free(tmp);
         free(inputString);
-
-        printf("Select.\n");
+        printf("Select instruction.\n");
         inputString = takeString(stdin, 10);
     }
-    
     free(inputString);
     return;
 }
@@ -124,7 +131,7 @@ bool disMonitor(int diseaseHashtableNumOfEntries, int countryHashtableNumOfEntri
     size_t len = 0;
     __ssize_t read;
     char *line = NULL;
-    Linked_List Entries;
+    Linked_List Entries;    // stores all correct the records
 
     if(!initMonitor(&file, &Entries)){
         return false;
@@ -185,8 +192,6 @@ bool disMonitor(int diseaseHashtableNumOfEntries, int countryHashtableNumOfEntri
     }
     inputLLtoHT(Entries, HT_country, 1);    // 0 for disease
     printHashTable(HT_country);
-    // 
-
 
     // querries
     Querries(HT_disease, HT_country);

@@ -17,7 +17,6 @@ typedef struct HeapNode *HeapNodePtr;
 
 typedef struct{
     HeapNodePtr root;
-    int heapHeight; // total floors of heap
 } MaxHeap;
 
 typedef MaxHeap *MaxHeapPtr;
@@ -35,7 +34,7 @@ void printMaxHeapNode(HeapNodePtr, int);
 
 void printMaxHeapTree(MaxHeapPtr);
 
-bool addMaxHeapNode(MaxHeapPtr, char*, HeapNodePtr*, int*);
+bool addMaxHeapNode(MaxHeapPtr, char*, int*);
 
 bool searchAllexisting(HeapNodePtr*, char*);
 
@@ -44,3 +43,5 @@ void findParentOfInsertedNode(HeapNodePtr, int, HeapNodePtr*);
 void insertNodetoMaxHeap(HeapNodePtr*, HeapNodePtr);
 
 void reheapify(HeapNodePtr*);
+
+void printKlargestItems(MaxHeapPtr, int);

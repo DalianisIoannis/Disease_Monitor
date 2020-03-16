@@ -35,7 +35,6 @@ AVLNodePtr rotateNodeRight(AVLNodePtr old_father){
 
     left_son->right = old_father;
     old_father->left = grandson;
-    // heights
     old_father->nodeHeight  = returnMaxInt( ReturnNodeHeight(old_father->left), ReturnNodeHeight(old_father->right) ) + 1;
     left_son->nodeHeight    = returnMaxInt( ReturnNodeHeight(left_son->left),  ReturnNodeHeight(left_son->right) ) + 1;
 
@@ -48,7 +47,6 @@ AVLNodePtr rotateNodeLeft(AVLNodePtr old_father){
 
     right_son->left = old_father;
     old_father->right = grandson;
-    // heights
     old_father->nodeHeight  = returnMaxInt( ReturnNodeHeight(old_father->left), ReturnNodeHeight(old_father->right) ) + 1;
     right_son->nodeHeight   = returnMaxInt( ReturnNodeHeight(right_son->left), ReturnNodeHeight(right_son->right) ) + 1;
 

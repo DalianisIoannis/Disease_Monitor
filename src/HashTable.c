@@ -25,7 +25,6 @@ HashTable initHashTable(int bucket_size, int entries){
     if(HT->bucket_array==NULL){ free(HT); return NULL; }
 
     for(int i=0; i<HT->entries; i++){
-        
         (HT->bucket_array)[i].next = NULL;
         (HT->bucket_array)[i].totalValues = array_size;
         
@@ -34,7 +33,6 @@ HashTable initHashTable(int bucket_size, int entries){
         for(int j=0; j<(HT->bucket_array)[i].totalValues; j++){
             ((HT->bucket_array)[i]).arr[j] = NULL;
         }
-
     }
     return HT;
 }
@@ -92,7 +90,6 @@ void printBucket(hashBucket HtB){
 
 void printHashTable(HashTable HT){
     printf("\nHash Table has %d entries and %d bucket_size.\n", HT->entries, HT->bucket_size);
-    
     for(int i=0; i<HT->entries; i++){
         printBucket(&(HT->bucket_array)[i]);
     }
@@ -123,7 +120,6 @@ hashBucket addNewBucket(patientRecord pR, int ind, int totalValues){
 }
 
 void addBucket(hashBucket HtB, patientRecord pR, int ind){
-
     bool have_i_entered_in_this_bucket = 0;
     for(int i=0; i<HtB->totalValues; i+=2){
         if(HtB->arr[i]==NULL){
@@ -178,7 +174,7 @@ bool addHT(HashTable HT, patientRecord pR, int ind){
     else{
         hashValue = hashFunction(pR->country, HT->entries);
     }
-    printf("Returned hash Value %d.\n", hashValue);
+    // printf("Returned hash Value %d.\n", hashValue);
     addBucket( &(HT->bucket_array)[hashValue], pR, ind );
     return true;
 }
@@ -204,7 +200,6 @@ void printNumOfDis(hashBucket b, char *d1, char *d2){
                 printAVLTree(tt);
                 get_child_nodes( tt->root, &total, d1, d2 );
 
-
                 printf("\n\n\nDisease %s has %d occurences.\n", (char*)b->arr[i], total);
             }
         }
@@ -226,85 +221,113 @@ void globalDiseaseStats(HashTable HT, char *d1, char *d2){
 }
 
 // recursively adds AVLnode values to Heap 
-void addAVLnodeValuetoMaxHeap(AVLNodePtr node, MaxHeapPtr Heap, HeapNodePtr *last, int *id){
+void addAVLnodeValuetoMaxHeap(AVLNodePtr node, MaxHeapPtr Heap, int *id, char *d3, char *d4, bool is_country){
     if(node==NULL){
         return;
     }
     else{
-        addAVLnodeValuetoMaxHeap(node->left, Heap, &(*last), id);
-        addAVLnodeValuetoMaxHeap(node->right, Heap, &(*last), id);
-
-        printf("\nGoing to add %s.\n", node->item->diseaseID);
-        printf("So far Heap:\n");
-        printMaxHeapTree(Heap);
-        printf("\n");
-        addMaxHeapNode(Heap, node->item->diseaseID, &(*last), id);
+        addAVLnodeValuetoMaxHeap(node->left, Heap, id, d3, d4, is_country);
+        addAVLnodeValuetoMaxHeap(node->right, Heap, id, d3, d4, is_country);
+        if(d3!=NULL){
+            int compd3 = compareDates(d3, node->item->entryDate);    // has to be 0 or 1
+            int compd4 = compareDates(d4, node->item->entryDate);    // has to be 0 or 1
+            if( (compd3==0 || compd3==1) && (compd4==0 || compd4==1) ){
+                // printf("\nGoing to add %s.\n", node->item->diseaseID);
+                // printf("So far Heap:\n");
+                // printMaxHeapTree(Heap);
+                // printf("\n");
+                if(is_country==true){
+                    addMaxHeapNode(Heap, node->item->diseaseID, id);
+                }
+                else{
+                    addMaxHeapNode(Heap, node->item->country, id);
+                }
+            }
+        }
+        else{
+            // printf("\nGoing to add %s.\n", node->item->diseaseID);
+            // printf("So far Heap:\n");
+            // printMaxHeapTree(Heap);
+            // printf("\n");
+            // addMaxHeapNode(Heap, node->item->diseaseID, id);
+            if(is_country==true){
+                addMaxHeapNode(Heap, node->item->diseaseID, id);
+            }
+            else{
+                addMaxHeapNode(Heap, node->item->country, id);
+            }
+        }
     }
 }
 
-void printSpecificBucket(hashBucket HtB, char *countr){
+void accesSpecificBucket(hashBucket HtB, char *countr_or_disease, int k, char *d3, char *d4, bool is_country){
     if(HtB!=NULL){
         for(int i=0; i<HtB->totalValues; i+=2){
             if(HtB->arr[i]!=NULL){
-                if(strcmp(HtB->arr[i], countr)==0){
-                    // Found specific country
-                    // MaxHeap
+                if(strcmp(HtB->arr[i], countr_or_disease)==0){
+                    // Found specific country or disease
                     MaxHeapPtr MaxHeapTree = initMaxHeap();
                     if(MaxHeapTree==NULL){
                         printf("Couldn't allocate Max Heap.\n");
                         return;
                     }
-                    
                     printf("\n\tPosition %d has value %s.\n", i, (char*)HtB->arr[i]);
                     AVLTreePtr tmpAVL = HtB->arr[i+1];
                     AVLNodePtr AVLroot = tmpAVL->root;
 
-                    // addMaxHeapNode(MaxHeapTree, (char*)HtB->arr[i+1]);
-                    HeapNodePtr *last = malloc(sizeof(HeapNodePtr));
-                    (*last) = NULL;
                     int idcount = 1;
-                    addAVLnodeValuetoMaxHeap(AVLroot, MaxHeapTree, &(*last), &idcount);
+                    addAVLnodeValuetoMaxHeap(AVLroot, MaxHeapTree, &idcount, d3, d4, is_country);
                     
-                    (*last) = NULL;
-                    free((*last));
-                    free((last));
-
                     printf("\tAVL tree of bucket\n");
                     printAVLTree(tmpAVL);
                     printf("\n");
                     
-                    printf("Print Max Heap:\n");
-                    printMaxHeapTree(MaxHeapTree);
-                    printf("\nPrinted Max Heap:\n");
+                    printKlargestItems(MaxHeapTree, k);
                     
                     emptyMaxHeap(MaxHeapTree);
-                    
                     return;
                 }
             }
-
         }
         if(HtB->next!=NULL){
             printf("Next bucket:\n");
         }
-        printSpecificBucket(HtB->next, countr);
+        accesSpecificBucket(HtB->next, countr_or_disease, k, d3, d4, is_country);
     }
 }
 
 void countryOccurences(HashTable HT, char *k, char *countr, char *d3, char *d4){
     int hV = hashFunction(countr, HT->entries);
     printf("Looking for country %s with hash Value %d.\n", countr, hV);
-    // make the heap here and pass it
-    printSpecificBucket(&(HT->bucket_array)[hV], countr);
+    accesSpecificBucket(&(HT->bucket_array)[hV], countr, atoi(k), d3, d4, true);
 }
 
-void topk_Diseases(HashTable HT_country, char *d1, char *d2, char *d3, char *d4){
+void diseaseOccurences(HashTable HT, char *k, char *dis, char *d3, char *d4){
+    int hV = hashFunction(dis, HT->entries);
+    printf("Looking for disease %s with hash Value %d.\n", dis, hV);
+    accesSpecificBucket(&(HT->bucket_array)[hV], dis, atoi(k), d3, d4, false);
+}
+
+// if is_country==true find k more for particular country
+// else find for particular disease k more countries
+void topk(HashTable HT, char *d1, char *d2, char *d3, char *d4, bool is_country){
     printf("\n");
-    if(d3!=NULL){
-        printf("Find occurences of all viruses in country %s from %s untill %s.\n", d2, d3, d4);
+    if( is_country==true ){
+        if(d3!=NULL){
+            printf("Find occurences of all viruses in country %s from %s untill %s.\n", d2, d3, d4);
+        }
+        else{
+            printf("Find occurences of all viruses in country %s.\n", d2);
+        }
+        countryOccurences(HT, d1, d2, d3, d4);
     }
     else{
-        printf("Find occurences of all viruses in country %s.\n", d2);
+        if(d3!=NULL){
+            printf("Find occurences of all countries with disease %s from %s untill %s.\n", d2, d3, d4);
+        }
+        else{
+            printf("Find occurences of all countries with disease %s.\n", d2);
+        }
+        diseaseOccurences(HT, d1, d2, d3, d4);
     }
-    countryOccurences(HT_country, d1, d2, d3, d4);
 }

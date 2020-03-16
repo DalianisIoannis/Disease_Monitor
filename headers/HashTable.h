@@ -49,6 +49,6 @@ void globalDiseaseStats(HashTable, char*, char*);
 
 void countryOccurences(HashTable, char*, char*, char*, char*);
 
-void topk_Diseases(HashTable, char*, char*, char*, char*);
+void topk(HashTable, char*, char*, char*, char*, bool);
 
-void printSpecificBucket(hashBucket, char*);
+void accesSpecificBucket(hashBucket, char*, int k, char*, char*, bool);

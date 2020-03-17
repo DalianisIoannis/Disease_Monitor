@@ -53,6 +53,21 @@ AVLNodePtr rotateNodeLeft(AVLNodePtr old_father){
     return right_son;
 }
 
+int getUnhealed(AVLNodePtr node){
+    int returner = 0;
+    if(node==NULL){
+        return 0;
+    }
+    else{
+        returner += getUnhealed(node->left);
+        returner += getUnhealed(node->right);
+        if( strcmp(node->item->exitDate, "-")==0 ){
+            returner++;
+        }
+        return returner;
+    }
+}
+
 void get_child_nodes(AVLNodePtr node, int *total, char *d1, char *d2, char *comparer){    // returns how many child nodes a node has but needs -1 in result
     // for diseaseFrequency
     // if comparer is NULL then i am in HT_disease

@@ -56,3 +56,5 @@ void accesSpecificBucket(hashBucket, char*, int k, char*, char*, bool);
 void diseaseFrequencyNoCountry(HashTable, char*, char*, char*);
 
 void diseaseFrequencyCountry(HashTable, char*, char*, char*, char*);
+
+void numCurrentPatients(HashTable, char*);

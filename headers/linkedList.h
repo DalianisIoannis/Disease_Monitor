@@ -33,3 +33,5 @@ void emptyLinkedList(Linked_List*);
 void printLinkedList(Linked_List);
 
 bool checkDup(Linked_List*, patientRecord);
+
+bool updateExitDate(Linked_List*, char*, char*);

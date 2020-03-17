@@ -395,3 +395,43 @@ void diseaseFrequencyCountry(HashTable HT, char *virusName, char *country, char 
     printf("Looking for country %s with hash Value %d.\n", country, hV);
     accessSpecificBucketAndPrintTotalOfOccurences(&(HT->bucket_array)[hV], country, date1, date2, virusName);
 }
+
+void traverseHTforUnhealed(hashBucket HtB, char *virusName, int *occur){
+    if(HtB!=NULL){
+        for(int i=0; i<HtB->totalValues; i+=2){
+            if(HtB->arr[i]!=NULL){
+                AVLTreePtr tmpAVL = HtB->arr[i+1];
+                AVLNodePtr AVLroot = tmpAVL->root;
+
+                if(virusName==NULL){
+                    (*occur) += getUnhealed( AVLroot );
+                }
+                else{
+                    if(strcmp(HtB->arr[i], virusName)==0){
+                        (*occur) += getUnhealed( AVLroot );
+                    }
+                }
+            }
+        }
+        if(HtB->next!=NULL){
+            traverseHTforUnhealed(HtB->next, virusName, occur);
+        }
+    }
+}
+
+void numCurrentPatients(HashTable HT, char *virusName){
+    int numOcc = 0;
+    if(virusName==NULL){
+        printf("Find number of patients still in hospital for each virus.\n");
+
+        for(int i=0; i<HT->entries; i++){
+            traverseHTforUnhealed( &(HT->bucket_array)[i], NULL, &numOcc );
+        }
+    }
+    else{
+        printf("Find number of patients still in hospital with virus %s.\n", virusName);
+        int hV = hashFunction(virusName, HT->entries);
+        traverseHTforUnhealed( &(HT->bucket_array)[hV], NULL, &numOcc );
+    }
+    printf("Found %d patients.\n", numOcc);
+}

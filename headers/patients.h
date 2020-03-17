@@ -22,3 +22,5 @@ patientRecord initRecord(char*);
 void printRecord(patientRecord);
 
 void deleteRecord(patientRecord*);
+
+void changePatientExitDate(patientRecord*, char*);

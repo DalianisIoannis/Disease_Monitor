@@ -83,3 +83,8 @@ void deleteRecord(patientRecord* p){
     free( (*p)->exitDate );
     free( *p );
 }
+
+void changePatientExitDate(patientRecord *p, char *date){
+    free( (*p)->exitDate );
+    (*p)->exitDate = strdup(date);
+}

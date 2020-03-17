@@ -74,3 +74,6 @@ topk-Diseases 15 Australia 03-07-2001 28-05-2008
 topk-Countries 15 EVD 03-07-2001 28-05-2008
 diseaseFrequency EVD 03-07-2001 28-05-2008
 diseaseFrequency COVID-2019 Turkey 03-07-2000 28-05-2010
+insertPatientRecord 7000 Johny Patatas EVD Japan 10-09-2003 10-09-2017
+recordPatientExit 855 16-02-2006
+numCurrentPatients FLU-2018

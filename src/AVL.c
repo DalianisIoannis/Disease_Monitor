@@ -53,28 +53,45 @@ AVLNodePtr rotateNodeLeft(AVLNodePtr old_father){
     return right_son;
 }
 
-void get_child_nodes(AVLNodePtr node, int *total, char *d1, char *d2){    // returns how many child nodes a node has but needs -1 in result
+void get_child_nodes(AVLNodePtr node, int *total, char *d1, char *d2, char *comparer){    // returns how many child nodes a node has but needs -1 in result
+    // for diseaseFrequency
+    // if comparer is NULL then i am in HT_disease
+    // else i am in HT_country and comparer is virus name
     if(node==NULL){
         return;
     }
     else{
-        if(d1==NULL){
-            *total = *total + 1;
-        }
-        else{
-            int compare1 = compareDates(d1, node->item->entryDate),
-                compare2 = compareDates(d2, node->item->entryDate);
-            if( (compare1==0 || compare1==2) && (compare2==0 || compare2==1) ){
+        if(comparer==NULL){
+            if(d1==NULL){
                 *total = *total + 1;
             }
+            else{
+                int compare1 = compareDates(d1, node->item->entryDate),
+                    compare2 = compareDates(d2, node->item->entryDate);
+                if( (compare1==0 || compare1==2) && (compare2==0 || compare2==1) ){
+                    *total = *total + 1;
+                }
+            }
+            get_child_nodes(node->left, total, d1, d2, comparer);
+            get_child_nodes(node->right, total, d1, d2, comparer);
         }
-        get_child_nodes(node->left, total, d1, d2);
-        get_child_nodes(node->right, total, d1, d2);
-
+        else{
+            if(d1==NULL && strcmp(node->item->diseaseID, comparer)==0){
+                *total = *total + 1;
+            }
+            else{
+                int compare1 = compareDates(d1, node->item->entryDate),
+                    compare2 = compareDates(d2, node->item->entryDate);
+                if( (compare1==0 || compare1==2) && (compare2==0 || compare2==1) && strcmp(node->item->diseaseID, comparer)==0){
+                    *total = *total + 1;
+                }
+            }
+            get_child_nodes(node->left, total, d1, d2, comparer);
+            get_child_nodes(node->right, total, d1, d2, comparer);
+        }
     }
     return;
 }
-
 
 int ReturnNodeHeight(AVLNodePtr node){
     if(node!=NULL){
@@ -207,7 +224,6 @@ void recPrintAVLNode(AVLNodePtr node, int space){
     for(i=10; i<space; i++){
         printf(" ");
     }
-    // printf("%s H %d\n", node->item->entryDate, node->nodeHeight);
     printf("%s\n", node->item->entryDate);
 
     recPrintAVLNode(node->left, space);

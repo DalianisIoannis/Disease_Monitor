@@ -172,7 +172,6 @@ void printKlargestItems(MaxHeapPtr tree, int k){
 
 bool addMaxHeapNode(MaxHeapPtr tree, char *item, int *id){
 
-
     if( searchAllexisting( &(tree->root), item )==true ){
         // printf("Found Same\n");
         reheapify( &(tree->root) );    // reheapify

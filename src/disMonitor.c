@@ -114,8 +114,31 @@ void Querries(HashTable HT_disease, HashTable HT_country){
                 topk(HT_disease, ind1, ind2, ind3, ind4, false);
             }
         }
+        else if( strcmp(instruct, "diseaseFrequency")==0 ){
+            // diseaseFrequency virusName [country] date1 date2
+            // instruct diseaseFrequency
+            // ind1     virusName has to be not NULL
+            // ind2     country could be NULL
+            // ind3     date1 not NULL
+            // ind4     date2 not NULL
+            // if country is NULL call diseaseFrequencyNoCountry with HT_disease
+            // else call diseaseFrequencyCountry with HT_country
+            if(ind1!=NULL && ind2!=NULL && ind3!=NULL){
+                if(ind4==NULL){
+                    // didn't give country
+                    diseaseFrequencyNoCountry(HT_disease, ind1, ind2, ind3);
+
+                }
+                else{
+                    diseaseFrequencyCountry(HT_country, ind1, ind2, ind3, ind4);
+                }
+            }
+            else{
+                printf("Need to provide proper variables.\n");
+            }
+        }
         else{
-            printf("Not such instruction exists.\n");
+            printf("No such instruction exists.\n");
         }
         free(tmp);
         free(inputString);
@@ -179,6 +202,7 @@ bool disMonitor(int diseaseHashtableNumOfEntries, int countryHashtableNumOfEntri
         return false;
     }
     inputLLtoHT(Entries, HT_disease, 0);    // 0 for disease
+    printf("Hash Table of Diseases is:\n");
     printHashTable(HT_disease);
     //
 
@@ -190,7 +214,8 @@ bool disMonitor(int diseaseHashtableNumOfEntries, int countryHashtableNumOfEntri
         emptyMonitor(&file, &Entries, &line);
         return false;
     }
-    inputLLtoHT(Entries, HT_country, 1);    // 0 for disease
+    inputLLtoHT(Entries, HT_country, 1);    // 1 for country
+    printf("Hash Table of Countries is:\n");
     printHashTable(HT_country);
 
     // querries

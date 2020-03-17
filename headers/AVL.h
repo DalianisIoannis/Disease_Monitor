@@ -48,7 +48,7 @@ void performRotations(AVLNodePtr*, AVLNodePtr*);
 
 int ReturnNodeHeight(AVLNodePtr);
 
-void get_child_nodes(AVLNodePtr, int*, char*, char*);
+void get_child_nodes(AVLNodePtr, int*, char*, char*, char*);
 
 AVLNodePtr rotateNodeRight(AVLNodePtr);
 

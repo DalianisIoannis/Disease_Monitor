@@ -68,7 +68,9 @@ bucketSize/16 bytes τότε αυτό ουσιαστικά δε χρησιμοπ
 
 Η συνάρτση takeString έχει παρθεί από το stackOverflow.
 
-globalDiseaseStats 20-01-2000 20-04-2019
+globalDiseaseStats 20-01-2005 20-04-2019
 
 topk-Diseases 15 Australia 03-07-2001 28-05-2008
 topk-Countries 15 EVD 03-07-2001 28-05-2008
+diseaseFrequency EVD 03-07-2001 28-05-2008
+diseaseFrequency COVID-2019 Turkey 03-07-2000 28-05-2010

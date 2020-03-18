@@ -15,7 +15,7 @@ bool checkDup(Linked_List *ll, patientRecord pR){
     listNode tmp = (*ll)->front;
     while ( tmp!=NULL ){
         if( strcmp(tmp->item->recordId, pR->recordId)==0 ){
-            printf("Patient with recordId %d already exists. Rejected!\n", atoi(pR->recordId));
+            fprintf(stderr, "Patient with recordId %d already exists. Rejected!\n", atoi(pR->recordId));
             return false;
         }
         tmp = tmp->next;
@@ -45,6 +45,7 @@ bool addNode(Linked_List *ll, patientRecord pR){
         else{
             deleteRecord( &(llNode->item) );
             free(llNode);
+            return false;
         }
     }
     return true;

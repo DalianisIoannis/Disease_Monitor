@@ -1,7 +1,4 @@
-#include "../headers/disMonitor.h"
 #include "../headers/HashTable.h"
-#include "../headers/AVL.h"
-#include "../headers/MaxHeap.h"
 
 HashTable initHashTable(int bucket_size, int entries){
     HashTable HT = malloc(sizeof(HTable));
@@ -174,7 +171,6 @@ bool addHT(HashTable HT, patientRecord pR, int ind){
     else{
         hashValue = hashFunction(pR->country, HT->entries);
     }
-    // printf("Returned hash Value %d.\n", hashValue);
     addBucket( &(HT->bucket_array)[hashValue], pR, ind );
     return true;
 }
@@ -267,8 +263,7 @@ void accesSpecificBucket(hashBucket HtB, char *countr_or_disease, int k, char *d
     if(HtB!=NULL){
         for(int i=0; i<HtB->totalValues; i+=2){
             if(HtB->arr[i]!=NULL){
-                if(strcmp(HtB->arr[i], countr_or_disease)==0){
-                    // Found specific country or disease
+                if(strcmp(HtB->arr[i], countr_or_disease)==0){  // Found specific country or disease
                     MaxHeapPtr MaxHeapTree = initMaxHeap();
                     if(MaxHeapTree==NULL){
                         printf("Couldn't allocate Max Heap.\n");
@@ -356,7 +351,6 @@ void accessSpecificBucketAndPrintTotalOfOccurences(hashBucket HtB, char *countr_
 
                 // use and remake get_child_nodes
                 if( find==NULL ){
-                    // call the function just to find number of occurenecs
                     get_child_nodes(AVLroot, &total, date1, date2, NULL );
                 }
                 else{

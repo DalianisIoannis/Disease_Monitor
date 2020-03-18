@@ -1,14 +1,17 @@
 #pragma once
+#define GNU_SOURCE
 
-#include "../headers/includer.h"
 #include "../headers/linkedList.h"
+#include "../headers/HashTable.h"
+#include "../headers/generalFuncs.h"
 
-bool disMonitor(int, int, int);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
-// bool initMonitor(FILE**, Linked_List*);
-
-// void emptyMonitor(FILE**, Linked_List*, char**);
-
-int compareDates(char*, char*);
-
-int returnMaxInt(int, int);
+bool disMonitor(char*, int, int, int);
+bool initMonitor(FILE**, Linked_List*, char*);
+void emptyMonitor(FILE**, Linked_List*, char**, HashTable*, HashTable*);
+bool inputLLtoHT(Linked_List, HashTable, int);
+void Querries(HashTable, HashTable, Linked_List);

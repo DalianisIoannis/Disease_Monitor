@@ -12,15 +12,12 @@ typedef struct{
     char* country;
     char* entryDate;
     char* exitDate;
-
 } pRecord;
 
 typedef pRecord *patientRecord;
 
+
 patientRecord initRecord(char*);
-
 void printRecord(patientRecord);
-
 void deleteRecord(patientRecord*);
-
 void changePatientExitDate(patientRecord*, char*);

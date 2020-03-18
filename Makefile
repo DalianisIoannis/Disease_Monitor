@@ -9,10 +9,10 @@ SDIR = src
 
 EXECUTABLE = diseaseMonitor
 
-_DEPS = includer.h
+_DEPS = disMonitor.h linkedList.h patients.h AVL.h HashTable.h MaxHeap.h generalFuncs.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o disMonitor.o linkedList.o patients.o AVL.o HashTable.o MaxHeap.o
+_OBJ = main.o disMonitor.o linkedList.o patients.o AVL.o HashTable.o MaxHeap.o generalFuncs.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
@@ -29,4 +29,6 @@ all:
 	clear
 	make clean
 	make
-	valgrind ./diseaseMonitor
+	# valgrind ./diseaseMonitor -p "Assets/fakeDiseasesDups.txt" –h1 8 –h2 3 –b 33
+	valgrind ./diseaseMonitor -p "Assets/fakeDiseases.txt" –h1 8 –h2 3 –b 33
+	# valgrind ./diseaseMonitor -p "Assets/bigEntries.txt" –h1 8 –h2 3 –b 33

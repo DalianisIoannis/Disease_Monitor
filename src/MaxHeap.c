@@ -29,21 +29,21 @@ void emptyMaxHeap(MaxHeapPtr tree){
 void printMaxHeapNode(HeapNodePtr node, int space){
     int i;
     if(node==NULL){
-        space += 10;    // 16
+        space += 10;
         for(i=10; i<space; i++){
             printf(" ");
         }
         printf("NULL");
         return;
     }
-    space += 10;    // 16
+    space += 10;
     printMaxHeapNode(node->right, space);
     printf("\n");
     for(i=10; i<space; i++){
         printf(" ");
     }
     if( strcmp(node->occurence, "$$$$$$$$$$$")!=0 ){
-        printf("%s, %d\n", node->occurence, node->total);
+        printf("D:%s, Num:%d\n", node->occurence, node->total);
     }
     else{
         printf("NULL");
@@ -66,7 +66,6 @@ bool searchAllexisting(HeapNodePtr *father, char *item){
             (*father)->total++;
             return true;
         }
-        // return 
         bool tmp = searchAllexisting( &(*father)->left, item );
         if(tmp==true){
             return true;
@@ -157,11 +156,11 @@ void reheapify(HeapNodePtr *node){
 void printKlargestItems(MaxHeapPtr tree, int k){
     printf("I am going to print the %d largest items of Heap:\n", k);
     printMaxHeapTree(tree);
-    printf("\nPrinted Max Heap.\n");
+    printf("\n\n\n");
     int began = k;
     while(k>0 && tree->root!=NULL){
         if( strcmp(tree->root->occurence, "$$$$$$$$$$$")!=0 ){
-            printf("%dth\tmost common occurence is %s\t with %d\tincidents.\n", began-k+1, tree->root->occurence, tree->root->total);
+            printf("%dth\tmost common occurence is %s\t with %d incidents.\n", began-k+1, tree->root->occurence, tree->root->total);
         }
         tree->root->occurence = "$$$$$$$$$$$";
         tree->root->total = 0;

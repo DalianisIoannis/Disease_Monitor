@@ -6,9 +6,9 @@
 #include <stdbool.h>
 
 typedef struct HeapNode{
-    char* occurence;
-    int total;
-    int id;
+    char    *occurence;
+    int     total;
+    int     id;
     struct HeapNode *right;
     struct HeapNode *left;
 } HeapNode;
@@ -22,26 +22,14 @@ typedef struct{
 typedef MaxHeap *MaxHeapPtr;
 
 
-
-
 MaxHeapPtr initMaxHeap();
-
 void emptyMaxHeap(MaxHeapPtr);
-
 void emptyMaxHeapNode(HeapNodePtr);
-
 void printMaxHeapNode(HeapNodePtr, int);
-
 void printMaxHeapTree(MaxHeapPtr);
-
 bool addMaxHeapNode(MaxHeapPtr, char*, int*);
-
 bool searchAllexisting(HeapNodePtr*, char*);
-
 void findParentOfInsertedNode(HeapNodePtr, int, HeapNodePtr*);
-
 void insertNodetoMaxHeap(HeapNodePtr*, HeapNodePtr);
-
 void reheapify(HeapNodePtr*);
-
 void printKlargestItems(MaxHeapPtr, int);

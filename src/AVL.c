@@ -1,5 +1,4 @@
 #include "../headers/AVL.h"
-#include "../headers/disMonitor.h"
 
 AVLTreePtr initAVLTree(){
     AVLTreePtr tree = malloc(sizeof(AVLTree));
@@ -33,10 +32,10 @@ AVLNodePtr rotateNodeRight(AVLNodePtr old_father){
     AVLNodePtr  left_son = old_father->left,
                 grandson = old_father->left->right;
 
-    left_son->right = old_father;
-    old_father->left = grandson;
-    old_father->nodeHeight  = returnMaxInt( ReturnNodeHeight(old_father->left), ReturnNodeHeight(old_father->right) ) + 1;
-    left_son->nodeHeight    = returnMaxInt( ReturnNodeHeight(left_son->left),  ReturnNodeHeight(left_son->right) ) + 1;
+    left_son->right     = old_father;
+    old_father->left    = grandson;
+    old_father->nodeHeight  = returnMaxInt( ReturnNodeHeight(old_father->left), ReturnNodeHeight(old_father->right) )   + 1;
+    left_son->nodeHeight    = returnMaxInt( ReturnNodeHeight(left_son->left),  ReturnNodeHeight(left_son->right) )      + 1;
 
     return left_son;
 }
@@ -45,10 +44,10 @@ AVLNodePtr rotateNodeLeft(AVLNodePtr old_father){
     AVLNodePtr  right_son = old_father->right,
                 grandson = old_father->right->left;
 
-    right_son->left = old_father;
-    old_father->right = grandson;
-    old_father->nodeHeight  = returnMaxInt( ReturnNodeHeight(old_father->left), ReturnNodeHeight(old_father->right) ) + 1;
-    right_son->nodeHeight   = returnMaxInt( ReturnNodeHeight(right_son->left), ReturnNodeHeight(right_son->right) ) + 1;
+    right_son->left     = old_father;
+    old_father->right   = grandson;
+    old_father->nodeHeight  = returnMaxInt( ReturnNodeHeight(old_father->left), ReturnNodeHeight(old_father->right) )   + 1;
+    right_son->nodeHeight   = returnMaxInt( ReturnNodeHeight(right_son->left), ReturnNodeHeight(right_son->right) )     + 1;
 
     return right_son;
 }
@@ -68,7 +67,7 @@ int getUnhealed(AVLNodePtr node){
     }
 }
 
-void get_child_nodes(AVLNodePtr node, int *total, char *d1, char *d2, char *comparer){    // returns how many child nodes a node has but needs -1 in result
+void get_child_nodes(AVLNodePtr node, int *total, char *d1, char *d2, char *comparer){    // returns node + childs of node
     // for diseaseFrequency
     // if comparer is NULL then i am in HT_disease
     // else i am in HT_country and comparer is virus name
@@ -126,7 +125,6 @@ int getBalanceFactor(AVLNodePtr node){
 }
 
 bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
-
     int comparer;
     if( (*existent)==NULL ){
         (*existent)         = (*added);
@@ -138,11 +136,9 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
         comparer = compareDates( (*existent)->item->entryDate, (*added)->item->entryDate);
         
         if(comparer==0 || comparer==2){ // goes to the right
-            // printf("For existing %s and added %s we go right\n", (*existent)->item->entryDate, (*added)->item->entryDate);
             compareAdd( &(*existent)->right, added);
         }
         else if(comparer==1){   // goes to the left
-            // printf("For existing %s and added %s we go left\n", (*existent)->item->entryDate, (*added)->item->entryDate);
             compareAdd( &(*existent)->left, &(*added));
         }
         else{   // -1 or -2
@@ -154,29 +150,24 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
         (*existent)->nodeHeight = 1 + returnMaxInt( ReturnNodeHeight((*existent)->left), ReturnNodeHeight((*existent)->right) );
 
         performRotations(existent, added);
-
     }
     return true;
 }
 
 void RR_rotation(AVLNodePtr* node){
-    // printf("Node %s needs RR rot\n", (*node)->item->entryDate);
     (*node) = rotateNodeRight((*node));
 }
 
 void LL_rotation(AVLNodePtr* node){
-    // printf("Node %s needs LL rot\n", (*node)->item->entryDate);
     (*node) = rotateNodeLeft((*node));
 }
 
 void RL_Rotation(AVLNodePtr* node){
-    // printf("Node %s needs RL rot\n", (*node)->item->entryDate);
     (*node)->right = rotateNodeRight((*node)->right);
     (*node) = rotateNodeLeft(*node);
 }
 
 void LR_Rotation(AVLNodePtr* node){
-    // printf("Node %s needs LR rot\n", (*node)->item->entryDate);
     (*node)->left = rotateNodeLeft((*node)->left);
     (*node) = rotateNodeRight(*node);
 }
@@ -208,11 +199,10 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
 }
 
 bool addAVLNode(AVLTreePtr tree, patientRecord pR){
-
     AVLNodePtr node = malloc(sizeof(AVLNode));
     if(node==NULL){ return false; }
-    node->item = pR;
-    node->nodeHeight = 1;
+    node->item          = pR;
+    node->nodeHeight    = 1;
 
     if( !compareAdd( &(tree->root), &node ) ){
         fprintf(stderr, "Couldn't add node in AVL. Abort...\n");
@@ -223,17 +213,16 @@ bool addAVLNode(AVLTreePtr tree, patientRecord pR){
 
 // according to printing technics found online
 void recPrintAVLNode(AVLNodePtr node, int space){
-
     int i;
     if(node==NULL){
-        space += 10;    // 16
+        space += 10;
         for(i=10; i<space; i++){
             printf(" ");
         }
         printf("NULL");
         return;
     }
-    space += 10;    // 16
+    space += 10;
     recPrintAVLNode(node->right, space);
     printf("\n");
     for(i=10; i<space; i++){

@@ -154,9 +154,9 @@ void reheapify(HeapNodePtr *node){
 }
 
 void printKlargestItems(MaxHeapPtr tree, int k){
-    printf("I am going to print the %d largest items of Heap:\n", k);
-    printMaxHeapTree(tree);
-    printf("\n\n\n");
+    // printf("I am going to print the %d largest items of Heap:\n", k);
+    // printMaxHeapTree(tree);
+    // printf("\n\n\n");
     int began = k;
     while(k>0 && tree->root!=NULL){
         if( strcmp(tree->root->occurence, "$$$$$$$$$$$")!=0 ){

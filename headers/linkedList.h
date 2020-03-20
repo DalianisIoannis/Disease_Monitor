@@ -25,5 +25,5 @@ Linked_List initlinkedList();
 bool addNode(Linked_List*, patientRecord);
 void emptyLinkedList(Linked_List*);
 void printLinkedList(Linked_List);
-bool checkDup(Linked_List*, patientRecord);
+// bool checkDup(Linked_List*, patientRecord);
 bool updateExitDate(Linked_List*, char*, char*);

@@ -193,7 +193,7 @@ void printNumOfDis(hashBucket b, char *d1, char *d2){
                 int total = 0;
                 AVLTreePtr tt = b->arr[i+1];
 
-                printAVLTree(tt);
+                // printAVLTree(tt);
                 get_child_nodes( tt->root, &total, d1, d2, NULL );
 
                 printf("\n\n\nDisease %s has %d occurences.\n", (char*)b->arr[i], total);
@@ -357,9 +357,9 @@ void accessSpecificBucketAndPrintTotalOfOccurences(hashBucket HtB, char *countr_
                     get_child_nodes(AVLroot, &total, date1, date2, find );
                 }
                                 
-                printf("\tAVL tree of bucket\n");
-                printAVLTree(tmpAVL);
-                printf("\n");
+                // printf("\tAVL tree of bucket\n");
+                // printAVLTree(tmpAVL);
+                // printf("\n");
                 if(find==NULL){
                     printf("Virus %s has %d occurences from %s until %s.\n", countr_or_disease, total, date1, date2);
                 }
@@ -399,6 +399,8 @@ void traverseHTforUnhealed(hashBucket HtB, char *virusName, int *occur){
 
                 if(virusName==NULL){
                     (*occur) += getUnhealed( AVLroot );
+                    printf("For virus %s\twe have %d patients still in hospital.\n", (char*)HtB->arr[i], *occur);
+                    (*occur) = 0;
                 }
                 else{
                     if(strcmp(HtB->arr[i], virusName)==0){
@@ -425,7 +427,7 @@ void numCurrentPatients(HashTable HT, char *virusName){
     else{
         printf("Find number of patients still in hospital with virus %s.\n", virusName);
         int hV = hashFunction(virusName, HT->entries);
-        traverseHTforUnhealed( &(HT->bucket_array)[hV], NULL, &numOcc );
+        traverseHTforUnhealed( &(HT->bucket_array)[hV], virusName, &numOcc );
+        printf("Found %d patients.\n", numOcc);
     }
-    printf("Found %d patients.\n", numOcc);
 }

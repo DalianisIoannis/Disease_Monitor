@@ -11,17 +11,17 @@ Linked_List initlinkedList(){
     return ll;
 }
 
-bool checkDup(Linked_List *ll, patientRecord pR){
-    listNode tmp = (*ll)->front;
-    while ( tmp!=NULL ){
-        if( strcmp(tmp->item->recordId, pR->recordId)==0 ){
-            fprintf(stderr, "Patient with recordId %d already exists. Rejected!\n", atoi(pR->recordId));
-            return false;
-        }
-        tmp = tmp->next;
-    }
-    return true;
-}
+// bool checkDup(Linked_List *ll, patientRecord pR){
+//     listNode tmp = (*ll)->front;
+//     while ( tmp!=NULL ){
+//         if( strcmp(tmp->item->recordId, pR->recordId)==0 ){
+//             fprintf(stderr, "Patient with recordId %d already exists. Rejected!\n", atoi(pR->recordId));
+//             return false;
+//         }
+//         tmp = tmp->next;
+//     }
+//     return true;
+// }
 
 bool addNode(Linked_List *ll, patientRecord pR){
     listNode llNode = malloc(sizeof(lNode));
@@ -37,16 +37,16 @@ bool addNode(Linked_List *ll, patientRecord pR){
         (*ll)->rear->next = NULL;
     }
     else{
-        if(checkDup(ll, pR)){   // check if already exists
+        // if(checkDup(ll, pR)){   // check if already exists
             (*ll)->rear->next = llNode;
             (*ll)->rear = llNode;
             (*ll)->rear->next = NULL;
-        }
-        else{
-            deleteRecord( &(llNode->item) );
-            free(llNode);
-            return false;
-        }
+        // }
+        // else{
+        //     deleteRecord( &(llNode->item) );
+        //     free(llNode);
+        //     return false;
+        // }
     }
     return true;
 }

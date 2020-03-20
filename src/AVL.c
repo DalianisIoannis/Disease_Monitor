@@ -126,20 +126,29 @@ int getBalanceFactor(AVLNodePtr node){
 
 bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
     int comparer;
+    bool ind;
     if( (*existent)==NULL ){
         (*existent)         = (*added);
         (*existent)->right  = NULL;
         (*existent)->left   = NULL;
+        return true;
     }
     else{
 
+        if( strcmp((*existent)->item->recordId, (*added)->item->recordId)==0 ){
+            // printf("BRHKA IDIO\n");
+            // printf("In node %s\n", (*existent)->item->entryDate);
+            free(*added);
+            (*added) = NULL;
+            return false;
+        }
         comparer = compareDates( (*existent)->item->entryDate, (*added)->item->entryDate);
         
         if(comparer==0 || comparer==2){ // goes to the right
-            compareAdd( &(*existent)->right, added);
+            ind = compareAdd( &(*existent)->right, added);
         }
         else if(comparer==1){   // goes to the left
-            compareAdd( &(*existent)->left, &(*added));
+            ind = compareAdd( &(*existent)->left, &(*added));
         }
         else{   // -1 or -2
             printf("For existing %s and added %s we have an error.\n", (*existent)->item->entryDate, (*added)->item->entryDate);
@@ -149,7 +158,10 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
 
         (*existent)->nodeHeight = 1 + returnMaxInt( ReturnNodeHeight((*existent)->left), ReturnNodeHeight((*existent)->right) );
 
-        performRotations(existent, added);
+        if( ind && (*added)!=NULL ){
+            performRotations(existent, added);
+        }
+        return ind;
     }
     return true;
 }
@@ -176,7 +188,7 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
     int balance = getBalanceFactor((*existent));
     int strcomp;
     
-    if((*existent)->right!=NULL){
+    if( (*existent)->right!=NULL && (*added)!=NULL ){
         strcomp = compareDates( (*added)->item->entryDate, (*existent)->right->item->entryDate );
         
         if( balance>=2 && (strcomp==0 || strcomp==1)){
@@ -186,7 +198,7 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
             RL_Rotation(&(*existent));
         }
     }
-    if((*existent)->left!=NULL){
+    if( (*existent)->left!=NULL && (*added)!=NULL ){
         strcomp = compareDates( (*added)->item->entryDate, (*existent)->left->item->entryDate );
 
         if( balance<=-2 && (strcomp==2) ){
@@ -205,7 +217,7 @@ bool addAVLNode(AVLTreePtr tree, patientRecord pR){
     node->nodeHeight    = 1;
 
     if( !compareAdd( &(tree->root), &node ) ){
-        fprintf(stderr, "Couldn't add node in AVL. Abort...\n");
+        // fprintf(stderr, "Couldn't add node in AVL. Abort...\n");
         return false;
     }
     return true;

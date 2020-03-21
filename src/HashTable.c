@@ -40,8 +40,11 @@ void emptyBucket(hashBucket *HtB, int do_i_delete_next){
         for(int i=1; i<(*HtB)->totalValues; i+=2){
             (*HtB)->arr[i-1] = NULL;
             if( (*HtB)->arr[i]!=NULL ){
+
                 emptyAVLTree( (*HtB)->arr[i] );
+                
                 (*HtB)->arr[i] = NULL;
+
             }
         }
         free( (*HtB)->arr );
@@ -128,18 +131,18 @@ void addBucket(hashBucket HtB, patientRecord pR, int ind){
             }
             AVLTreePtr tree = initAVLTree(); 
             HtB->arr[i+1] = tree;
-            addAVLNode(HtB->arr[i+1], pR);
+            addAVLNode(HtB->arr[i+1], pR, NULL);
             have_i_entered_in_this_bucket = 1;
             break;
         }
         else{
             if( ind==0 && strcmp(HtB->arr[i], pR->diseaseID)==0 ){
-                addAVLNode(HtB->arr[i+1], pR);
+                addAVLNode(HtB->arr[i+1], pR, NULL);
                 have_i_entered_in_this_bucket = 1;
                 break;
             }
             if( ind==1 && strcmp(HtB->arr[i], pR->country)==0 ){
-                addAVLNode(HtB->arr[i+1], pR);
+                addAVLNode(HtB->arr[i+1], pR, NULL);
                 have_i_entered_in_this_bucket = 1;
                 break;
             }

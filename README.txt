@@ -95,7 +95,7 @@ globalDiseaseStats 20-01-2005 20-04-2019
 topk-Diseases 15 Australia 03-07-2001 28-05-2008
 topk-Countries 15 EVD 03-07-2001 28-05-2008
 diseaseFrequency EVD 03-07-2001 28-05-2008
-diseaseFrequency COVID-2019 Turkey 03-07-2000 28-05-2010
+diseaseFrequency COVID-2019 03-07-2000 28-05-2010 Turkey
 insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003 10-09-2017
 recordPatientExit 855 16-02-2006
 numCurrentPatients FLU-2018
@@ -112,6 +112,3 @@ README tha steilo kai pdf kai txt
 Να το ενημερώνετε, με την προυπόθεση ότι το exitDate που δίνεται δεν είναι
 προγενέστερο του entryDate.Θεωρείστε ότι μπορεί ένας ασθενής να εισαχθεί και να
 πάρει εξιτήριο την ίδια μέρα. Άρα, μπορεί τα δύο dates να είναι ίδια.
-
-Να το ψάχνω με το AVL και να το αλλάξω εκεί, οπότε μετά θα είναι αλλαγμένο και στη
-λίστα. Να ελεγχθεί με print.

@@ -18,7 +18,11 @@ bool initMonitor(FILE **f, Linked_List *ll, char *filename){
 void emptyMonitor(FILE **f, Linked_List *ll, char** line, HashTable *HT_disease, HashTable *HT_country, AVLTreePtr *DuplicateTree){
     deleteHT(*HT_disease);
     deleteHT(*HT_country);
-    emptyAVLTree(*DuplicateTree);
+
+    // emptyAVLTree(*DuplicateTree);
+    emptyAVLnodes( (*DuplicateTree)->root );
+    free(*DuplicateTree);
+
     emptyLinkedList(ll);
     free(*line);
     free(*ll);
@@ -149,7 +153,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 strcat(line, ind6);
                 strcat(line, " ");
                 strcat(line, ind7);
-                printf("New line is %s.\n", line);
+                // printf("New line is %s.\n", line);
 
                 patientRecord a = initRecord(line);
                 free(line);
@@ -162,13 +166,14 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                     deleteRecord(&a);
                     continue;
                 }
-                if( addAVLNode(*DuplicateTree, a)==false ){
+                // if( addAVLNode(*DuplicateTree, a, NULL)==false ){
+                if( addAVLNode(*DuplicateTree, a, a->recordId)==false ){
                     printf("Such recordId already exists!\n");
                     deleteRecord(&a);
                 }
                 else{
                     if(!addNode(&Entries, a)){
-                        // printf("Such recordId already exists!\n");
+                        printf("Such recordId already exists in List!\n");
                     }
                     else{
                         // printLinkedList(Entries);
@@ -223,7 +228,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     Linked_List Entries;    // stores all correct the records
     HashTable   HT_disease, HT_country;
     AVLTreePtr  DuplicateTree = initAVLTree();
-    int         num_unique = 0;
+    // int         num_unique = 0;
 
     if( !initMonitor(&file, &Entries, filename) ){
         return false;
@@ -242,11 +247,15 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
             continue;
         }
         // check and add in duplicator tree
-        if( addAVLNode(DuplicateTree, a)==false ){
+        if( addAVLNode(DuplicateTree, a, a->recordId)==false ){
             fprintf(stderr, "Patient with recordId %d already exists. Rejected!\n", atoi(a->recordId));
             deleteRecord(&a);
             free(line);
-            emptyAVLTree(DuplicateTree);
+
+            // emptyAVLTree(DuplicateTree);
+            emptyAVLnodes( DuplicateTree->root );
+            free(DuplicateTree);
+            
             emptyLinkedList(&Entries);
             free(Entries);
             fclose(file);
@@ -259,8 +268,8 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
             }
         }
     }
-    get_child_nodes(DuplicateTree->root, &num_unique, NULL, NULL, NULL);
-    printf("%d unique records.\n", num_unique);
+    // get_child_nodes(DuplicateTree->root, &num_unique, NULL, NULL, NULL);
+    // printf("%d unique records.\n", num_unique);
     // printLinkedList(Entries);
     // printAVLTree(DuplicateTree);
 
@@ -284,10 +293,11 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
 
     Querries(HT_disease, HT_country, Entries, &DuplicateTree);
 
-    // printf("Check after querries.\n");
+    printf("Check after querries.\n");
     // printLinkedList(Entries);
     // printHashTable(HT_disease);
     // printHashTable(HT_country);
+    // printAVLTree(DuplicateTree);
 
     emptyMonitor(&file, &Entries, &line, &HT_disease, &HT_country, &DuplicateTree);
 

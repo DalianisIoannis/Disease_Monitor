@@ -10,9 +10,10 @@
 
 typedef struct AVLNode{
     patientRecord item;
+    int     nodeHeight;
+    char    *nodeKey;
     struct AVLNode *left;
     struct AVLNode *right;
-    int nodeHeight;
 } AVLNode;
 
 typedef AVLNode *AVLNodePtr;
@@ -30,8 +31,8 @@ typedef AVLTree *AVLTreePtr;
 AVLTreePtr initAVLTree();
 void    emptyAVLTree(AVLTreePtr);
 void    emptyAVLnodes(AVLNodePtr);
-bool    addAVLNode(AVLTreePtr, patientRecord);
-bool    compareAdd(AVLNodePtr*, AVLNodePtr*);
+bool    addAVLNode(AVLTreePtr, patientRecord, char*);
+bool    compareAdd(AVLNodePtr*, AVLNodePtr*, char*);
 void    printAVLTree(AVLTreePtr);
 void    recPrintAVLNode(AVLNodePtr, int);
 void    performRotations(AVLNodePtr*, AVLNodePtr*);

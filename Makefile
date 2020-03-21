@@ -29,6 +29,6 @@ all:
 	clear
 	make clean
 	make
-	# valgrind ./diseaseMonitor -p "Assets/fakeDiseasesDups.txt" –h1 8 –h2 3 –b 33
 	valgrind ./diseaseMonitor -p "Assets/fakeDiseases.txt" –h1 8 –h2 3 –b 33
 	# valgrind ./diseaseMonitor -p "Assets/bigEntries.txt" –h1 8 –h2 3 –b 33
+	# valgrind ./diseaseMonitor -p "Assets/fakeDiseasesDups.txt" –h1 8 –h2 3 –b 33

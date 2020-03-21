@@ -137,3 +137,18 @@ bool isNumber(const char *str){
     }
     return true;
 }
+
+// 0    if dates are same
+// 1    if first date is bigger(later than second date)
+// 2    for the opposite
+int comp_String_as_Int(char *s1, char *s2){
+    if( atoi(s1)>atoi(s2) ){
+        return 1;
+    }
+    else if(atoi(s1)==atoi(s2)){
+        return 0;
+    }
+    else{
+        return 2;
+    }
+}

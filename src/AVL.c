@@ -15,9 +15,10 @@ void emptyAVLnodes(AVLNodePtr node){    // Postorder deletion of all tree Nodes
         emptyAVLnodes(node->left);
         emptyAVLnodes(node->right);
 
-        node->item  = NULL; 
-        node->left  = NULL;
-        node->right = NULL;
+        node->item      = NULL; 
+        node->nodeKey   = NULL;
+        node->left      = NULL;
+        node->right     = NULL;
         free(node);
     }
     return;
@@ -114,7 +115,6 @@ int ReturnNodeHeight(AVLNodePtr node){
     return 0;
 }
 
-
 int getBalanceFactor(AVLNodePtr node){
     if(node==NULL){
         return 0;
@@ -124,13 +124,20 @@ int getBalanceFactor(AVLNodePtr node){
     }
 }
 
-bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
+bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added, char *Id_dif){
     int comparer;
     bool ind;
     if( (*existent)==NULL ){
         (*existent)         = (*added);
         (*existent)->right  = NULL;
         (*existent)->left   = NULL;
+        if( Id_dif!=NULL ){
+            (*existent)->nodeKey = Id_dif;
+        }
+        else{
+            (*existent)->nodeKey = NULL;
+        }
+        
         return true;
     }
     else{
@@ -142,13 +149,20 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added){
             (*added) = NULL;
             return false;
         }
-        comparer = compareDates( (*existent)->item->entryDate, (*added)->item->entryDate);
-        
+        if( Id_dif==NULL ){
+            comparer = compareDates( (*existent)->item->entryDate, (*added)->item->entryDate);
+        }
+        else{
+            // compare with nodeKey we are in 
+            // 1 if first is bigger
+            comparer = comp_String_as_Int( (*existent)->nodeKey, Id_dif );
+        }
+        // if comparer is 2 second is bigger
         if(comparer==0 || comparer==2){ // goes to the right
-            ind = compareAdd( &(*existent)->right, added);
+            ind = compareAdd( &(*existent)->right, added, Id_dif);
         }
         else if(comparer==1){   // goes to the left
-            ind = compareAdd( &(*existent)->left, &(*added));
+            ind = compareAdd( &(*existent)->left, &(*added), Id_dif);
         }
         else{   // -1 or -2
             printf("For existing %s and added %s we have an error.\n", (*existent)->item->entryDate, (*added)->item->entryDate);
@@ -189,7 +203,13 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
     int strcomp;
     
     if( (*existent)->right!=NULL && (*added)!=NULL ){
-        strcomp = compareDates( (*added)->item->entryDate, (*existent)->right->item->entryDate );
+
+        if( (*existent)->nodeKey==NULL ){
+            strcomp = compareDates( (*added)->item->entryDate, (*existent)->right->item->entryDate );
+        }
+        else{
+            strcomp = comp_String_as_Int( (*added)->nodeKey, (*existent)->right->nodeKey );
+        }
         
         if( balance>=2 && (strcomp==0 || strcomp==1)){
             LL_rotation(&(*existent));
@@ -199,7 +219,13 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
         }
     }
     if( (*existent)->left!=NULL && (*added)!=NULL ){
-        strcomp = compareDates( (*added)->item->entryDate, (*existent)->left->item->entryDate );
+        
+        if( (*existent)->nodeKey==NULL ){
+            strcomp = compareDates( (*added)->item->entryDate, (*existent)->left->item->entryDate );
+        }
+        else{
+            strcomp = comp_String_as_Int( (*added)->nodeKey, (*existent)->left->nodeKey );
+        }
 
         if( balance<=-2 && (strcomp==2) ){
             RR_rotation(&(*existent));
@@ -210,13 +236,19 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
     }
 }
 
-bool addAVLNode(AVLTreePtr tree, patientRecord pR){
+bool addAVLNode(AVLTreePtr tree, patientRecord pR, char *key_not_date){
     AVLNodePtr node = malloc(sizeof(AVLNode));
     if(node==NULL){ return false; }
     node->item          = pR;
     node->nodeHeight    = 1;
+    if( key_not_date!=NULL ){
+        node->nodeKey = key_not_date;
+    }
+    else{
+        node->nodeKey = NULL;
+    }
 
-    if( !compareAdd( &(tree->root), &node ) ){
+    if( !compareAdd( &(tree->root), &node, key_not_date ) ){
         // fprintf(stderr, "Couldn't add node in AVL. Abort...\n");
         return false;
     }
@@ -240,7 +272,12 @@ void recPrintAVLNode(AVLNodePtr node, int space){
     for(i=10; i<space; i++){
         printf(" ");
     }
-    printf("%s\n", node->item->entryDate);
+    if(node->nodeKey==NULL){
+        printf("%s\n", node->item->entryDate);
+    }
+    else{
+        printf("%s\n", node->nodeKey);
+    }
 
     recPrintAVLNode(node->left, space);
 }

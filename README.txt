@@ -9,7 +9,7 @@
 τα diseaseRecords. Τα diseaseRecords σβήνονται μόνο στο τέλος που αδειάζει η Απλά 
 Συνδεδεμένη Λίστα.
 
-
+ΕΙΜΑΙ ΣΤΟ ΑΒΛ ΣΤΟ ΚΟΜΠΑΡΕΑΝΤ
 
 
 AVL
@@ -18,6 +18,16 @@ AVL
 Τα AVL κλειδιά που έχουν τιμή ίση με αυτή του τρέχοντος AVL κόμβου κατανέμονται προς τα
 δεξιά παιδιά του, μαζί δηλαδή με τους AVL κόμβους που έχουν μεγαλύτερες τιμές AVL
 κλειδιών από αυτόν.
+Η συνάρτηση getUnhealed χρησιμοποιείται για να βρούμε αναδρομικά πόσοι ασθενείς είναι ακόμα
+στο νοσοκομείο, δηλαδή έχουν στο exitDate "-".
+Η συνάρτηση get_child_nodes χρησιμοποιείται για το querry diseaseFrequency και για την περίπτωση που δίνεται
+country και για την περίπτωση που δε δίνεται.
+Το Balance Factor ενός κόμβου είναι η διαφορά του height του αριστερού παιδιού από το height του
+δεξιού παιδιού.
+Η συνάρτηση compareAdd κατεβαίνει το δέντρο για να βρει πού θα μπεί ο καινούριος κόμβος συγκρίνοντας
+τις ημερομηνίες των υπάρχουσων κόμβων με αυτόν. Αυτή καλεί και τον έλεγχο για πιθανά rotations.
+Στην περιπτωση μόνο του δέντρου που ελέγχει για Duplicate κλειδιά, ο έλεγχος στους κόμβους γίνεται με βάση
+το recordId.
 
 
 
@@ -97,6 +107,8 @@ topk-Countries 15 EVD 03-07-2001 28-05-2008
 diseaseFrequency EVD 03-07-2001 28-05-2008
 diseaseFrequency COVID-2019 03-07-2000 28-05-2010 Turkey
 insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003 10-09-2017
+insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003
+insertPatientRecord 2 Johny Patatas EVD Japan 10-09-2003
 recordPatientExit 855 16-02-2006
 numCurrentPatients FLU-2018
 
@@ -107,7 +119,6 @@ README tha steilo kai pdf kai txt
 ίσως τα Ids να ελέγχονται και σα strings απλά πχ ένα να είναι 1i3gy13u
 μέχρι τώρα λογικά όλα είναι με strcmp
 τα ids μπορώ να τα συγκρίνω με strcmp και αυτή να είναι η αξία σύγκρισής μου
-να δίνεται κενό το τελευταίο στο insertnewpatient
 
 
 int strcmp(const char *str1, const char *str2)
@@ -118,3 +129,15 @@ This function return values that are as follows −
     if Return value > 0 then it indicates str2 is less than str1.
 
     if Return value = 0 then it indicates str1 is equal to str2.
+
+
+7 = 55
+a = 97
+Q = 81
+
+233
+
+3 = 51
+0 = 48
+0 = 48
+V = 86

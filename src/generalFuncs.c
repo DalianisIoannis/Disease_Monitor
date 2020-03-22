@@ -173,6 +173,7 @@ int getIntValOfString(char *s){
     printf("Print it one by one.\n");
     int i = 0;
     int len = strlen(s);
+    int ascci_value = 0;
     printf("Has len %d\n", len);
     char *tmp_str = strdup(s);
     while( i<len ){
@@ -180,23 +181,30 @@ int getIntValOfString(char *s){
         // printf("%d\n", (char)(tmp_str[i]) );
         // printf("%c\n", (char)(tmp_str[i]) );
         printf("%c\n", tmp_str[i] );
+        if( tmp_str[i]<='9' && tmp_str[i]>='0' ){
+            printf("Is num\n");
+            printf("With num %c\n", tmp_str[i] );
+        }
+        else{
+            printf("Is not num\n");
+            printf("With num %d\n", (int)(tmp_str[i]) );
+        }
         // printf("%d\n", (tmp_str[i]) );
         i++;
     }
-    printf("Print it one by one.\n");
-    char *tmp = s;
-    int ascci_value = 0;
-    while(*tmp){
-        if( (*tmp)<'9' && (*tmp)>='0' ){
-            printf("Arithmos %s\n", tmp);
-            ascci_value += atoi(tmp);
-        }
-        else{
-            printf("Oxi arithmos %s\n", tmp);
-            ascci_value += (int)(*tmp);
-        }
-        tmp++;
-    }
+    // printf("Print it one by one.\n");
+    // char *tmp = s;
+    // while(*tmp){
+    //     if( (*tmp)<'9' && (*tmp)>='0' ){
+    //         printf("Arithmos %s\n", tmp);
+    //         ascci_value += atoi(tmp);
+    //     }
+    //     else{
+    //         printf("Oxi arithmos %s\n", tmp);
+    //         ascci_value += (int)(*tmp);
+    //     }
+    //     tmp++;
+    // }
     free(tmp_str);
     return ascci_value;
 }

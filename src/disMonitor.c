@@ -129,11 +129,17 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
             // ind5 is country
             // ind6 is entryDate
             // ind7 is exitDate can be NULL
-            if(ind7==NULL){
-                printf("A new patient entry needs 7 characteristics.\n");
+            if(ind6==NULL){
+                printf("A new patient entry needs at least 6 characteristics.\n");
             }
             else{
-                char *line = malloc( (strlen(ind1)+strlen(ind2)+strlen(ind3)+strlen(ind4)+strlen(ind5)+strlen(ind6)+strlen(ind7)+7)*sizeof(char) );
+                 char *line;
+                if( ind7!=NULL ){
+                    line = malloc( (strlen(ind1)+strlen(ind2)+strlen(ind3)+strlen(ind4)+strlen(ind5)+strlen(ind6)+strlen(ind7)+7)*sizeof(char) );
+                }
+                else{
+                    line = malloc( (strlen(ind1)+strlen(ind2)+strlen(ind3)+strlen(ind4)+strlen(ind5)+strlen(ind6)+8)*sizeof(char) );
+                }
                 if(line==NULL){
                     printf("Couldn't allocate line.\n");
                     return;
@@ -150,7 +156,13 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 strcat(line, " ");
                 strcat(line, ind6);
                 strcat(line, " ");
-                strcat(line, ind7);
+                if( ind7==NULL ){
+                    strcat(line, "-");
+                }
+                else{
+                    strcat(line, ind7);
+                }
+
                 // printf("New line is %s.\n", line);
 
                 patientRecord a = initRecord(line);
@@ -166,7 +178,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
                 // if( addAVLNode(*DuplicateTree, a, NULL)==false ){
                 if( addAVLNode(*DuplicateTree, a, a->recordId)==false ){
-                    printf("Such recordId already exists!\n");
+                    printf("Such recordId already exists!\n\n");
                     deleteRecord(&a);
                 }
                 else{
@@ -183,6 +195,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                             printf("Error!\n");
                             return;
                         }
+                        printf("New record added.\n\n");
                     }
                 }
             }
@@ -197,7 +210,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 //     printf("Such Id doesn't exist.\n");
                 // }
                 if( UpdateExitDate( &((*DuplicateTree)->root), ind1, ind2 ) ){
-                    printf("Patient exitDate changed!\n");
+                    printf("\nPatient exitDate changed!\n\n");
                 }
             }
         }
@@ -205,7 +218,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
             numCurrentPatients(HT_disease, ind1);
         }
         else{
-            printf("No such instruction exists.\n");
+            printf("\nNo such instruction exists.\n");
         }
         free(tmp);
         free(inputString);
@@ -267,6 +280,9 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
                 return false;
             }
         }
+        // printf("\n\nPRIN\n");
+        // printAVLTree(DuplicateTree);
+        // printf("\nMETA\n\n");
     }
     // get_child_nodes(DuplicateTree->root, &num_unique, NULL, NULL, NULL);
     // printf("%d unique records.\n", num_unique);
@@ -293,11 +309,11 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
 
     Querries(HT_disease, HT_country, Entries, &DuplicateTree);
 
-    printf("Check after querries.\n");
+    // printf("Check after querries.\n");
     // printLinkedList(Entries);
     // printHashTable(HT_disease);
     // printHashTable(HT_country);
-    printAVLTree(DuplicateTree);
+    // printAVLTree(DuplicateTree);
 
     emptyMonitor(&file, &Entries, &line, &HT_disease, &HT_country, &DuplicateTree);
 

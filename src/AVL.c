@@ -143,7 +143,7 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added, char *Id_dif){
     else{
 
         if( strcmp((*existent)->item->recordId, (*added)->item->recordId)==0 ){
-            // printf("BRHKA IDIO\n");
+            printf("BRHKA IDIO\n");
             // printf("In node %s\n", (*existent)->item->entryDate);
             free(*added);
             (*added) = NULL;
@@ -155,19 +155,22 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added, char *Id_dif){
         else{
             // compare with nodeKey we are in 
             // 1 if first is bigger
-            printf("Compare %s existent with %s added\n", (*existent)->nodeKey, Id_dif);
+            // printf("Compare %s existent with %s added\n", (*existent)->nodeKey, Id_dif);
             comparer = comp_String_as_Int( (*existent)->nodeKey, Id_dif );
             // > 0 if first > second
             // < 0 if first < second
             // comparer = strcmp( (*existent)->nodeKey, Id_dif );
             // printf("Strcmp returns %d\n", comparer);
+            // if( comparer==0 ){
+            //     printf("EEEEEEEEEEEEEE\n");
+            // }
             // if( comparer<0 ){
             //     comparer = 2;
             // }
             // else{
             //     comparer = 1;
             // }
-            printf("Comparer returns %d\n", comparer);
+            // printf("Comparer returns %d\n", comparer);
             
         }
         // if comparer is 2 second is bigger
@@ -250,10 +253,13 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
 }
 
 bool addAVLNode(AVLTreePtr tree, patientRecord pR, char *key_not_date){
+    // printf("Adding %s\n", key_not_date);
     AVLNodePtr node = malloc(sizeof(AVLNode));
     if(node==NULL){ return false; }
     node->item          = pR;
     node->nodeHeight    = 1;
+    node->right         = NULL;
+    node->left          = NULL;
     if( key_not_date!=NULL ){
         node->nodeKey = key_not_date;
     }
@@ -313,7 +319,7 @@ bool UpdateExitDate(AVLNodePtr *node, char *Id, char *date){
                 return true;
             }
             else{
-                printf("Patient can't have exited on that date!\n");
+                printf("\nPatient can't have exited on that date!\n\n");
                 return false;
             }
         }

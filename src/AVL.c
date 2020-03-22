@@ -249,7 +249,6 @@ bool addAVLNode(AVLTreePtr tree, patientRecord pR, char *key_not_date){
     }
 
     if( !compareAdd( &(tree->root), &node, key_not_date ) ){
-        // fprintf(stderr, "Couldn't add node in AVL. Abort...\n");
         return false;
     }
     return true;
@@ -284,4 +283,33 @@ void recPrintAVLNode(AVLNodePtr node, int space){
 
 void printAVLTree(AVLTreePtr tree){
     recPrintAVLNode(tree->root, 0);
+}
+
+bool UpdateExitDate(AVLNodePtr *node, char *Id, char *date){
+    if( (*node)==NULL ){
+        printf("There is not such patient!\n");
+        return false;
+    }
+    else{
+        // int compareIDs = strcomp( (*node)->item->recordId, Id );
+        int compareIDs = comp_String_as_Int( (*node)->item->recordId, Id );
+        if( compareIDs==0 ){    // found same id
+            int comparer = compareDates( (*node)->item->entryDate, date );
+            if( comparer==0 || comparer==2 ){   //valid
+                changePatientExitDate( &((*node)->item), date );
+                return true;
+            }
+            else{
+                printf("Patient can't have exited on that date!\n");
+                return false;
+            }
+        }
+        if( compareIDs==1 ){    // current is bigger
+            return UpdateExitDate( &((*node)->left), Id, date );
+        }
+        if( compareIDs==2 ){    // searching is bigger
+            return UpdateExitDate( &((*node)->right), Id, date );
+        }
+    }
+    return false;
 }

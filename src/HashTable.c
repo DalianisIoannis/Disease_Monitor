@@ -198,8 +198,8 @@ void printNumOfDis(hashBucket b, char *d1, char *d2){
 
                 // printAVLTree(tt);
                 get_child_nodes( tt->root, &total, d1, d2, NULL );
-
-                printf("\n\n\nDisease %s has %d occurences.\n", (char*)b->arr[i], total);
+                // printf("\n\n\n");
+                printf("Disease %s has %d occurences.\n", (char*)b->arr[i], total);
             }
         }
         printNumOfDis(b->next, d1, d2);
@@ -272,7 +272,7 @@ void accesSpecificBucket(hashBucket HtB, char *countr_or_disease, int k, char *d
                         printf("Couldn't allocate Max Heap.\n");
                         return;
                     }
-                    printf("\n\tPosition %d has value %s.\n", i, (char*)HtB->arr[i]);
+                    // printf("\n\tPosition %d has value %s.\n", i, (char*)HtB->arr[i]);
                     AVLTreePtr tmpAVL = HtB->arr[i+1];
                     AVLNodePtr AVLroot = tmpAVL->root;
 
@@ -280,9 +280,9 @@ void accesSpecificBucket(hashBucket HtB, char *countr_or_disease, int k, char *d
                     // is_country is false for topk-Countries
                     addAVLnodeValuetoMaxHeap(AVLroot, MaxHeapTree, &idcount, d3, d4, is_country);
                     
-                    printf("\tAVL tree of bucket\n");
-                    printAVLTree(tmpAVL);
-                    printf("\n");
+                    // printf("\tAVL tree of bucket\n");
+                    // printAVLTree(tmpAVL);
+                    // printf("\n");
                     
                     // printf("Heap created:\n");
                     // printMaxHeapNode(MaxHeapTree->root, 0);
@@ -295,7 +295,7 @@ void accesSpecificBucket(hashBucket HtB, char *countr_or_disease, int k, char *d
             }
         }
         if(HtB->next!=NULL){
-            printf("Next bucket:\n");
+            // printf("Next bucket:\n");
         }
         accesSpecificBucket(HtB->next, countr_or_disease, k, d3, d4, is_country);
     }
@@ -303,13 +303,13 @@ void accesSpecificBucket(hashBucket HtB, char *countr_or_disease, int k, char *d
 
 void countryOccurences(HashTable HT, char *k, char *countr, char *d3, char *d4){
     int hV = hashFunction(countr, HT->entries);
-    printf("Looking for country %s with hash Value %d.\n", countr, hV);
+    // printf("Looking for country %s with hash Value %d.\n", countr, hV);
     accesSpecificBucket(&(HT->bucket_array)[hV], countr, atoi(k), d3, d4, true);
 }
 
 void diseaseOccurences(HashTable HT, char *k, char *dis, char *d3, char *d4){
     int hV = hashFunction(dis, HT->entries);
-    printf("Looking for disease %s with hash Value %d.\n", dis, hV);
+    // printf("Looking for disease %s with hash Value %d.\n", dis, hV);
     accesSpecificBucket(&(HT->bucket_array)[hV], dis, atoi(k), d3, d4, false);
 }
 
@@ -347,7 +347,7 @@ void accessSpecificBucketAndPrintTotalOfOccurences(hashBucket HtB, char *countr_
     if(HtB!=NULL){
         for(int i=0; i<HtB->totalValues; i+=2){
             if(strcmp(HtB->arr[i], countr_or_disease)==0){
-                printf("\n\tPosition %d has value %s.\n", i, (char*)HtB->arr[i]);
+                // printf("\n\tPosition %d has value %s.\n", i, (char*)HtB->arr[i]);
                 AVLTreePtr tmpAVL = HtB->arr[i+1];
                 AVLNodePtr AVLroot = tmpAVL->root;
                 int total = 0;
@@ -373,7 +373,7 @@ void accessSpecificBucketAndPrintTotalOfOccurences(hashBucket HtB, char *countr_
             }
         }
         if(HtB->next!=NULL){
-            printf("Next bucket:\n");
+            // printf("Next bucket:\n");
             accessSpecificBucketAndPrintTotalOfOccurences(HtB->next, countr_or_disease, date1, date2, find);
         }
     }
@@ -382,14 +382,14 @@ void accessSpecificBucketAndPrintTotalOfOccurences(hashBucket HtB, char *countr_
 void diseaseFrequencyNoCountry(HashTable HT, char *virusName, char *date1, char* date2){
     printf("Find number of occurences for virus %s from %s until %s.\n", virusName, date1, date2);
     int hV = hashFunction(virusName, HT->entries);
-    printf("Looking for disease %s with hash Value %d.\n", virusName, hV);
+    // printf("Looking for disease %s with hash Value %d.\n", virusName, hV);
     accessSpecificBucketAndPrintTotalOfOccurences(&(HT->bucket_array)[hV], virusName, date1, date2, NULL);
 }
 
 void diseaseFrequencyCountry(HashTable HT, char *virusName, char *country, char *date1, char* date2){
     printf("Find number of occurences for virus %s in %s from %s until %s.\n", virusName, country, date1, date2);
     int hV = hashFunction(country, HT->entries);
-    printf("Looking for country %s with hash Value %d.\n", country, hV);
+    // printf("Looking for country %s with hash Value %d.\n", country, hV);
     accessSpecificBucketAndPrintTotalOfOccurences(&(HT->bucket_array)[hV], country, date1, date2, virusName);
 }
 

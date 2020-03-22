@@ -194,8 +194,12 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 printf("Need to provide recordId and exitDate.\n");
             }
             else{
-                if( !updateExitDate(&Entries, ind1, ind2) ){
-                    printf("Such Id doesn't exist.\n");
+                // has to be with AVL
+                // if( !updateExitDate(&Entries, ind1, ind2) ){
+                //     printf("Such Id doesn't exist.\n");
+                // }
+                if( UpdateExitDate( &((*DuplicateTree)->root), ind1, ind2 ) ){
+                    printf("Patient exitDate changed!\n");
                 }
             }
         }
@@ -293,7 +297,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
 
     Querries(HT_disease, HT_country, Entries, &DuplicateTree);
 
-    printf("Check after querries.\n");
+    // printf("Check after querries.\n");
     // printLinkedList(Entries);
     // printHashTable(HT_disease);
     // printHashTable(HT_country);

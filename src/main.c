@@ -13,7 +13,6 @@ int main(int argc, char** argv){
     // argv[6] countryHashtableNumOfEntries
     // argv[7] –b
     // argv[8] bucketSize
-    // printf("Command line arguments are %s %s %s %s %s %s %s %s %s %s.\n", argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9]);
     if(argv[8]==NULL){
         fprintf(stderr, "Command must be in form: ./diseaseMonitor -p patientRecordsFile –h1 diseaseHashtableNumOfEntries –h2 countryHashtableNumOfEntries –b bucketSize!\n");
         exit(1);

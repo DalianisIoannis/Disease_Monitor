@@ -50,18 +50,10 @@ patientRecord initRecord(char* line){
         return NULL;
     }
 
-    // printf("\tRecord with Id \t%s\n", p->recordId);
-    // printf("\tRecord with patientFirstName \t%s\n", p->patientFirstName);
-    // printf("\tRecord with patientLastName \t%s\n", p->patientLastName);
-    // printf("\tRecord with diseaseID \t%s\n", p->diseaseID);
-    // printf("\tRecord with country \t%s\n", p->country);
-    // printf("\tRecord with entryDate \t%s\n", p->entryDate);
-    // printf("\tRecord with exitDate \t%s\n", p->exitDate);
     return p;
 }
 
 void printRecord(patientRecord p){
-
     printf("Patient with recordId \t%s:\n", p->recordId);
     printf("\tpatientFirstName \t%s\n", p->patientFirstName);
     printf("\tpatientLastName \t%s\n", p->patientLastName);
@@ -72,7 +64,6 @@ void printRecord(patientRecord p){
 }
 
 void deleteRecord(patientRecord* p){
-
     // printf("\tDelete patient with RecordId %s\n", (*p)->recordId);
     free( (*p)->recordId );
     free( (*p)->patientFirstName );

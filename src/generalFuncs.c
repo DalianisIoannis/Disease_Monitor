@@ -138,8 +138,8 @@ bool isNumber(const char *str){
     return true;
 }
 
-// 0    if dates are same
-// 1    if first date is bigger(later than second date)
+// 0    if are same
+// 1    if first  is bigger
 // 2    for the opposite
 int comp_String_as_Int(char *s1, char *s2){
     if( atoi(s1)>atoi(s2) ){
@@ -151,4 +151,14 @@ int comp_String_as_Int(char *s1, char *s2){
     else{
         return 2;
     }
+}
+
+int getIntValOfString(char *s){
+    char *tmp = s;
+    int ascci_value = 0;
+    while(*tmp){
+        ascci_value += (int)(*tmp);
+        tmp++;
+    }
+    return ascci_value;
 }

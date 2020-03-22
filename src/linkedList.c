@@ -76,20 +76,20 @@ void printLinkedList(Linked_List ll){
     }
 }
 
-bool updateExitDate(Linked_List *ll, char *Id, char *date){
-    listNode tmp = (*ll)->front;
-    while(tmp!=NULL){
-        if(strcmp(tmp->item->recordId, Id)==0){
-            int comparer = compareDates(tmp->item->entryDate, date);
-            if( comparer==0 || comparer==2 ){
-                changePatientExitDate( &(tmp->item), date );
-            }
-            else{
-                printf("Can't have exited on that date!\n");
-            }
-            return true;
-        }
-        tmp = tmp->next;
-    }
-    return false;
-}
+// bool updateExitDate(Linked_List *ll, char *Id, char *date){
+//     listNode tmp = (*ll)->front;
+//     while(tmp!=NULL){
+//         if(strcmp(tmp->item->recordId, Id)==0){
+//             int comparer = compareDates(tmp->item->entryDate, date);
+//             if( comparer==0 || comparer==2 ){
+//                 changePatientExitDate( &(tmp->item), date );
+//             }
+//             else{
+//                 printf("Can't have exited on that date!\n");
+//             }
+//             return true;
+//         }
+//         tmp = tmp->next;
+//     }
+//     return false;
+// }

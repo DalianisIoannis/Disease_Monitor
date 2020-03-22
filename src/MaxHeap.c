@@ -61,7 +61,6 @@ bool searchAllexisting(HeapNodePtr *father, char *item){
         return false;
     }
     else{
-        // printf("Compare %s with %s\n", (*father)->occurence, item);
         if( strcmp( (*father)->occurence, item )==0 ){
             (*father)->total++;
             return true;
@@ -172,7 +171,6 @@ void printKlargestItems(MaxHeapPtr tree, int k){
 bool addMaxHeapNode(MaxHeapPtr tree, char *item, int *id){
 
     if( searchAllexisting( &(tree->root), item )==true ){
-        // printf("Found Same\n");
         reheapify( &(tree->root) );    // reheapify
     }
     else{

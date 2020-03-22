@@ -155,7 +155,20 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added, char *Id_dif){
         else{
             // compare with nodeKey we are in 
             // 1 if first is bigger
+            printf("Compare %s existent with %s added\n", (*existent)->nodeKey, Id_dif);
             comparer = comp_String_as_Int( (*existent)->nodeKey, Id_dif );
+            // > 0 if first > second
+            // < 0 if first < second
+            // comparer = strcmp( (*existent)->nodeKey, Id_dif );
+            // printf("Strcmp returns %d\n", comparer);
+            // if( comparer<0 ){
+            //     comparer = 2;
+            // }
+            // else{
+            //     comparer = 1;
+            // }
+            printf("Comparer returns %d\n", comparer);
+            
         }
         // if comparer is 2 second is bigger
         if(comparer==0 || comparer==2){ // goes to the right

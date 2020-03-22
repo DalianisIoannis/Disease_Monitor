@@ -31,6 +31,13 @@ int main(int argc, char** argv){
         exit(1);
     }
 
+
+    // printf("Compare 889 with 4758 %d\n", strcmp("889", "4758"));
+    // printf("Int val of 889 is %d\n", getIntValOfString("889"));
+    // printf("Int val of 4758 is %d\n", getIntValOfString("4758"));
+
+
+
     printf("\n\n");
     return 0;
 }

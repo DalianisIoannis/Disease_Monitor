@@ -153,12 +153,50 @@ int comp_String_as_Int(char *s1, char *s2){
     }
 }
 
+// 0    if are same
+// 1    if first  is bigger
+// 2    for the opposite
+// int comp_Id_as_String(char *s1, char *s2){
+//     if( atoi(s1)>atoi(s2) ){
+//         return 1;
+//     }
+//     else if(atoi(s1)==atoi(s2)){
+//         return 0;
+//     }
+//     else{
+//         return 2;
+//     }
+// }
+
 int getIntValOfString(char *s){
+    printf("Given %s\n", s);
+    printf("Print it one by one.\n");
+    int i = 0;
+    int len = strlen(s);
+    printf("Has len %d\n", len);
+    char *tmp_str = strdup(s);
+    while( i<len ){
+        // printf("%s\n", (char*)(tmp_str[i]) );
+        // printf("%d\n", (char)(tmp_str[i]) );
+        // printf("%c\n", (char)(tmp_str[i]) );
+        printf("%c\n", tmp_str[i] );
+        // printf("%d\n", (tmp_str[i]) );
+        i++;
+    }
+    printf("Print it one by one.\n");
     char *tmp = s;
     int ascci_value = 0;
     while(*tmp){
-        ascci_value += (int)(*tmp);
+        if( (*tmp)<'9' && (*tmp)>='0' ){
+            printf("Arithmos %s\n", tmp);
+            ascci_value += atoi(tmp);
+        }
+        else{
+            printf("Oxi arithmos %s\n", tmp);
+            ascci_value += (int)(*tmp);
+        }
         tmp++;
     }
+    free(tmp_str);
     return ascci_value;
 }

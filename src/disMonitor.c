@@ -19,9 +19,7 @@ void emptyMonitor(FILE **f, Linked_List *ll, char** line, HashTable *HT_disease,
     deleteHT(*HT_disease);
     deleteHT(*HT_country);
 
-    // emptyAVLTree(*DuplicateTree);
-    emptyAVLnodes( (*DuplicateTree)->root );
-    free(*DuplicateTree);
+    emptyAVLTree(*DuplicateTree);
 
     emptyLinkedList(ll);
     free(*line);
@@ -256,9 +254,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
             deleteRecord(&a);
             free(line);
 
-            // emptyAVLTree(DuplicateTree);
-            emptyAVLnodes( DuplicateTree->root );
-            free(DuplicateTree);
+            emptyAVLTree(DuplicateTree);
             
             emptyLinkedList(&Entries);
             free(Entries);
@@ -297,11 +293,11 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
 
     Querries(HT_disease, HT_country, Entries, &DuplicateTree);
 
-    // printf("Check after querries.\n");
+    printf("Check after querries.\n");
     // printLinkedList(Entries);
     // printHashTable(HT_disease);
     // printHashTable(HT_country);
-    // printAVLTree(DuplicateTree);
+    printAVLTree(DuplicateTree);
 
     emptyMonitor(&file, &Entries, &line, &HT_disease, &HT_country, &DuplicateTree);
 

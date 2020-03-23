@@ -30,12 +30,24 @@ int compareDates(char *d1, char *d2){
         }
 
         token = strtok(temp,"-");
+        if( isNumber(token)==false ){
+            fprintf(stderr, "Date given wrong. Abort...\n");
+            exit(1);
+        }
         day1 = atoi(token);
 
         token = strtok(NULL,"-");
+        if( isNumber(token)==false ){
+            fprintf(stderr, "Date given wrong. Abort...\n");
+            exit(1);
+        }
         month1 = atoi(token);
 
         token = strtok(NULL,"-\n \t");
+        if( isNumber(token)==false ){
+            fprintf(stderr, "Date given wrong. Abort...\n");
+            exit(1);
+        }
         year1 = atoi(token);
 
         free(temp);
@@ -46,17 +58,28 @@ int compareDates(char *d1, char *d2){
         }
 
         token = strtok(temp,"-");
+        if( isNumber(token)==false ){
+            fprintf(stderr, "Date given wrong. Abort...\n");
+            exit(1);
+        }
         day2 = atoi(token);
         
         token = strtok(NULL,"-");
+        if( isNumber(token)==false ){
+            fprintf(stderr, "Date given wrong. Abort...\n");
+            exit(1);
+        }
         month2 = atoi(token);
         
         token = strtok(NULL,"-\n \t");
+        if( isNumber(token)==false ){
+            fprintf(stderr, "Date given wrong. Abort...\n");
+            exit(1);
+        }
         year2 = atoi(token);
 
         free(temp);
-        // printf("Computed Date1 as %d-%d-%d\n", day1, month1, year1);
-        // printf("Computed Date2 as %d-%d-%d\n", day2, month2, year2);
+
         if(year2>year1){
             return 2;
         }
@@ -141,22 +164,7 @@ bool isNumber(const char *str){
 // 0    if are same
 // 1    if first  is bigger
 // 2    for the opposite
-int comp_String_as_Int(char *s1, char *s2){
-    if( atoi(s1)>atoi(s2) ){
-        return 1;
-    }
-    else if(atoi(s1)==atoi(s2)){
-        return 0;
-    }
-    else{
-        return 2;
-    }
-}
-
-// 0    if are same
-// 1    if first  is bigger
-// 2    for the opposite
-// int comp_Id_as_String(char *s1, char *s2){
+// int comp_String_as_Int(char *s1, char *s2){
 //     if( atoi(s1)>atoi(s2) ){
 //         return 1;
 //     }
@@ -167,44 +175,3 @@ int comp_String_as_Int(char *s1, char *s2){
 //         return 2;
 //     }
 // }
-
-int getIntValOfString(char *s){
-    printf("Given %s\n", s);
-    printf("Print it one by one.\n");
-    int i = 0;
-    int len = strlen(s);
-    int ascci_value = 0;
-    printf("Has len %d\n", len);
-    char *tmp_str = strdup(s);
-    while( i<len ){
-        // printf("%s\n", (char*)(tmp_str[i]) );
-        // printf("%d\n", (char)(tmp_str[i]) );
-        // printf("%c\n", (char)(tmp_str[i]) );
-        printf("%c\n", tmp_str[i] );
-        if( tmp_str[i]<='9' && tmp_str[i]>='0' ){
-            printf("Is num\n");
-            printf("With num %c\n", tmp_str[i] );
-        }
-        else{
-            printf("Is not num\n");
-            printf("With num %d\n", (int)(tmp_str[i]) );
-        }
-        // printf("%d\n", (tmp_str[i]) );
-        i++;
-    }
-    // printf("Print it one by one.\n");
-    // char *tmp = s;
-    // while(*tmp){
-    //     if( (*tmp)<'9' && (*tmp)>='0' ){
-    //         printf("Arithmos %s\n", tmp);
-    //         ascci_value += atoi(tmp);
-    //     }
-    //     else{
-    //         printf("Oxi arithmos %s\n", tmp);
-    //         ascci_value += (int)(*tmp);
-    //     }
-    //     tmp++;
-    // }
-    free(tmp_str);
-    return ascci_value;
-}

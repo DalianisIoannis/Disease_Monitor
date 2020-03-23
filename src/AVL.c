@@ -143,8 +143,7 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added, char *Id_dif){
     else{
 
         if( strcmp((*existent)->item->recordId, (*added)->item->recordId)==0 ){
-            printf("BRHKA IDIO\n");
-            // printf("In node %s\n", (*existent)->item->entryDate);
+            // printf("FOUND SAME\n"); printf("In node %s\n", (*existent)->item->entryDate);
             free(*added);
             (*added) = NULL;
             return false;
@@ -153,25 +152,14 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added, char *Id_dif){
             comparer = compareDates( (*existent)->item->entryDate, (*added)->item->entryDate);
         }
         else{
-            // compare with nodeKey we are in 
-            // 1 if first is bigger
-            // printf("Compare %s existent with %s added\n", (*existent)->nodeKey, Id_dif);
-            comparer = comp_String_as_Int( (*existent)->nodeKey, Id_dif );
-            // > 0 if first > second
-            // < 0 if first < second
-            // comparer = strcmp( (*existent)->nodeKey, Id_dif );
-            // printf("Strcmp returns %d\n", comparer);
-            // if( comparer==0 ){
-            //     printf("EEEEEEEEEEEEEE\n");
-            // }
-            // if( comparer<0 ){
-            //     comparer = 2;
-            // }
-            // else{
-            //     comparer = 1;
-            // }
-            // printf("Comparer returns %d\n", comparer);
-            
+            // comparer = comp_String_as_Int( (*existent)->nodeKey, Id_dif );
+            comparer = strcmp( (*existent)->nodeKey, Id_dif );
+            if( comparer<0 ){
+                comparer = 2;
+            }
+            else{
+                comparer = 1;
+            }
         }
         // if comparer is 2 second is bigger
         if(comparer==0 || comparer==2){ // goes to the right
@@ -215,8 +203,7 @@ void LR_Rotation(AVLNodePtr* node){
 }
 
 void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
-    int balance = getBalanceFactor((*existent));
-    int strcomp;
+    int balance = getBalanceFactor((*existent)), strcomp;
     
     if( (*existent)->right!=NULL && (*added)!=NULL ){
 
@@ -224,7 +211,14 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
             strcomp = compareDates( (*added)->item->entryDate, (*existent)->right->item->entryDate );
         }
         else{
-            strcomp = comp_String_as_Int( (*added)->nodeKey, (*existent)->right->nodeKey );
+            // strcomp = comp_String_as_Int( (*added)->nodeKey, (*existent)->right->nodeKey );
+            strcomp = strcmp( (*added)->nodeKey, (*existent)->right->nodeKey );
+            if( strcomp<0 ){
+                strcomp = 2;
+            }
+            else{
+                strcomp = 1;
+            }
         }
         
         if( balance>=2 && (strcomp==0 || strcomp==1)){
@@ -240,7 +234,14 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
             strcomp = compareDates( (*added)->item->entryDate, (*existent)->left->item->entryDate );
         }
         else{
-            strcomp = comp_String_as_Int( (*added)->nodeKey, (*existent)->left->nodeKey );
+            // strcomp = comp_String_as_Int( (*added)->nodeKey, (*existent)->left->nodeKey );
+            strcomp = strcmp( (*added)->nodeKey, (*existent)->left->nodeKey );
+            if( strcomp<0 ){
+                strcomp = 2;
+            }
+            else{
+                strcomp = 1;
+            }
         }
 
         if( balance<=-2 && (strcomp==2) ){
@@ -253,7 +254,6 @@ void performRotations(AVLNodePtr* existent, AVLNodePtr* added){
 }
 
 bool addAVLNode(AVLTreePtr tree, patientRecord pR, char *key_not_date){
-    // printf("Adding %s\n", key_not_date);
     AVLNodePtr node = malloc(sizeof(AVLNode));
     if(node==NULL){ return false; }
     node->item          = pR;
@@ -306,12 +306,18 @@ void printAVLTree(AVLTreePtr tree){
 
 bool UpdateExitDate(AVLNodePtr *node, char *Id, char *date){
     if( (*node)==NULL ){
-        printf("There is not such patient!\n");
+        printf("There is not such patient!\n\n");
         return false;
     }
     else{
-        // int compareIDs = strcomp( (*node)->item->recordId, Id );
-        int compareIDs = comp_String_as_Int( (*node)->item->recordId, Id );
+        int compareIDs = strcmp( (*node)->item->recordId, Id );
+        if( compareIDs<0 ){
+            compareIDs = 2;
+        }
+        else if(compareIDs>0){
+            compareIDs = 1;
+        }
+        // int compareIDs = comp_String_as_Int( (*node)->item->recordId, Id );
         if( compareIDs==0 ){    // found same id
             int comparer = compareDates( (*node)->item->entryDate, date );
             if( comparer==0 || comparer==2 ){   //valid

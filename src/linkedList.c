@@ -37,16 +37,9 @@ bool addNode(Linked_List *ll, patientRecord pR){
         (*ll)->rear->next = NULL;
     }
     else{
-        // if(checkDup(ll, pR)){   // check if already exists
-            (*ll)->rear->next = llNode;
-            (*ll)->rear = llNode;
-            (*ll)->rear->next = NULL;
-        // }
-        // else{
-        //     deleteRecord( &(llNode->item) );
-        //     free(llNode);
-        //     return false;
-        // }
+        (*ll)->rear->next = llNode;
+        (*ll)->rear = llNode;
+        (*ll)->rear->next = NULL;
     }
     return true;
 }

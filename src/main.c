@@ -3,6 +3,7 @@
 
 int main(int argc, char** argv){
     printf("\n\n");
+    
     // ./diseaseMonitor -p patientRecordsFile –h1 diseaseHashtableNumOfEntries –h2 countryHashtableNumOfEntries –b bucketSize
     // argv[0] ./diseaseMonitor
     // argv[1] -p
@@ -30,15 +31,6 @@ int main(int argc, char** argv){
         fprintf(stderr, "Disease Monitor didn't work successfully!\n");
         exit(1);
     }
-
-    // > 0 if first > second
-    // < 0 if first < second
-    // printf("Compare 1111111 with 2 %d\n", strcmp("1111111", "2"));
-    // printf("Int val of 889 is %d\n\n", getIntValOfString("889"));
-    // printf("Int val of 4758 is %d\n\n", getIntValOfString("4758"));
-    // printf("Int val of 4a7b5c8 is %d\n\n", getIntValOfString("4a7b5c8"));
-
-
 
     printf("\n\n");
     return 0;

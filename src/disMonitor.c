@@ -1,6 +1,6 @@
 #include "../headers/disMonitor.h"
 
-bool initMonitor(FILE **f, Linked_List *ll, char *filename){
+bool initMonitor(FILE **f, Linked_List *ll, char *filename, AVLTreePtr *DuplicateTree){
     *f = fopen(filename, "r");
     if( (*f)==NULL ){
         fprintf(stderr, "Couldn't open txt file. Abort...\n");
@@ -12,15 +12,18 @@ bool initMonitor(FILE **f, Linked_List *ll, char *filename){
         return false;
     }
     
+    *DuplicateTree = initAVLTree();
+    if((*DuplicateTree)==NULL){
+        return false;
+    }
+
     return true;
 }
 
 void emptyMonitor(FILE **f, Linked_List *ll, char** line, HashTable *HT_disease, HashTable *HT_country, AVLTreePtr *DuplicateTree){
     deleteHT(*HT_disease);
     deleteHT(*HT_country);
-
     emptyAVLTree(*DuplicateTree);
-
     emptyLinkedList(ll);
     free(*line);
     free(*ll);
@@ -67,56 +70,90 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
         ind6 = strtok(NULL," \n\t");
         ind7 = strtok(NULL," \n\t");
         
-        // printf("Instruction %s %s %s %s %s %s %s %s.\n", instruct, ind1, ind2, ind3, ind4, ind5, ind6, ind7);
-
         if(strcmp(instruct, "globalDiseaseStats")==0){
-            if(ind1!=NULL && ind2==NULL){ 
-                printf("Both dates should be either NULL or not NULL.\n");
+            if(ind1!=NULL && ind2==NULL){
+                printf("Both dates should be either NULL or not NULL.\n\n");
             }
             else{
-                globalDiseaseStats(HT_disease, ind1, ind2);
+                if(ind1!=NULL){
+                    int compDat = compareDates(ind1, ind2);
+                    if( compDat==0 || compDat==2 ){
+                        globalDiseaseStats(HT_disease, ind1, ind2);
+                    }
+                    else{
+                        printf("Give correct dates.\n\n");
+                    }
+                }
+                else{
+                    globalDiseaseStats(HT_disease, ind1, ind2);
+                }
             }
         }
         else if( strcmp(instruct, "topk-Diseases" )==0){
             if(ind1==NULL || ind2==NULL){
-                printf("Need to provide k and country.\n");
+                printf("Need to provide k and country.\n\n");
             }
             else if(ind3!=NULL && ind4==NULL){ 
-                printf("Both dates should be either NULL or not NULL.\n");
+                printf("Both dates should be either NULL or not NULL.\n\n");
             }
             else{
-                topk(HT_country, ind1, ind2, ind3, ind4, true);
+                if(ind3!=NULL){
+                    int compDat = compareDates(ind3, ind4);
+                    if( compDat==0 || compDat==2 ){
+                        topk(HT_country, ind1, ind2, ind3, ind4, true);
+                    }
+                    else{
+                        printf("Give correct dates.\n\n");
+                    }
+                }
+                else{
+                    topk(HT_country, ind1, ind2, ind3, ind4, true);
+                }
             }
         }
         else if( strcmp(instruct, "topk-Countries")==0 ){
             if(ind1==NULL || ind2==NULL){
-                printf("Need to provide k and disease.\n");
+                printf("Need to provide k and disease.\n\n");
             }
             else if(ind3!=NULL && ind4==NULL){ 
-                printf("Both dates should be either NULL or not NULL.\n");
+                printf("Both dates should be either NULL or not NULL.\n\n");
             }
             else{
-                topk(HT_disease, ind1, ind2, ind3, ind4, false);
+                if(ind3!=NULL){
+                    int compDat = compareDates(ind3, ind4);
+                    if( compDat==0 || compDat==2 ){
+                        topk(HT_disease, ind1, ind2, ind3, ind4, false);
+                    }
+                    else{
+                        printf("Give correct dates.\n\n");
+                    }
+                }
+                else{
+                    topk(HT_disease, ind1, ind2, ind3, ind4, false);
+                }
             }
         }
-        else if( strcmp(instruct, "diseaseFrequency")==0 ){
-            // diseaseFrequency virusName date1 date2 [country]
+        else if( strcmp(instruct, "diseaseFrequency")==0 ){ // diseaseFrequency virusName date1 date2 [country]
             // instruct diseaseFrequency
             // ind1     virusName has to be not NULL
             // ind2     date1 has to be not NULL
             // ind3     date2 has to be not NULL
             // ind4     country can be NULL
-            // if country is NULL call diseaseFrequencyNoCountry with HT_disease
-            // else call diseaseFrequencyCountry with HT_country
             if( ind1==NULL || ind2==NULL || ind3==NULL ){
-                printf("Need to provide proper variables.\n");
+                printf("Need to provide proper variables.\n\n");
             }
             else{
-                if( ind4==NULL ){ // didn't give country
-                    diseaseFrequencyNoCountry(HT_disease, ind1, ind2, ind3);
+                int compDat = compareDates(ind2, ind3);
+                if(compDat!=0 && compDat!=2){
+                    printf("Give correct dates.\n\n");
                 }
                 else{
-                    diseaseFrequencyCountry(HT_country, ind1, ind4, ind2, ind3);
+                    if( ind4==NULL ){ // didn't give country
+                        diseaseFrequencyNoCountry(HT_disease, ind1, ind2, ind3);
+                    }
+                    else{
+                        diseaseFrequencyCountry(HT_country, ind1, ind4, ind2, ind3);
+                    }
                 }
             }
         }
@@ -130,7 +167,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
             // ind6 is entryDate
             // ind7 is exitDate can be NULL
             if(ind6==NULL){
-                printf("A new patient entry needs at least 6 characteristics.\n");
+                printf("A new patient entry needs at least 6 characteristics.\n\n");
             }
             else{
                  char *line;
@@ -163,8 +200,6 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                     strcat(line, ind7);
                 }
 
-                // printf("New line is %s.\n", line);
-
                 patientRecord a = initRecord(line);
                 free(line);
                 if(a==NULL){
@@ -172,43 +207,38 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                     return;
                 }
                 if( compareDates(a->entryDate, a->exitDate)==1 ){   //check if dates are ok
-                    printf("Patient with recordId %s has wrong dates. Rejected!\n", a->recordId);
-                    deleteRecord(&a);
-                    continue;
-                }
-                // if( addAVLNode(*DuplicateTree, a, NULL)==false ){
-                if( addAVLNode(*DuplicateTree, a, a->recordId)==false ){
-                    printf("Such recordId already exists!\n\n");
+                    printf("Patient with recordId %s has wrong dates. Rejected!\n\n", a->recordId);
                     deleteRecord(&a);
                 }
                 else{
-                    if(!addNode(&Entries, a)){
-                        printf("Such recordId already exists in List!\n");
+                    if( addAVLNode(*DuplicateTree, a, a->recordId)==false ){
+                        printf("Such recordId already exists!\n\n");
+                        deleteRecord(&a);
                     }
                     else{
-                        // printLinkedList(Entries);
-                        if(!addHT(HT_country, a, 1)){
-                            printf("Error!\n");
-                            return;
+                        if(!addNode(&Entries, a)){
+                            printf("Such recordId already exists in List!\n");
                         }
-                        if(!addHT(HT_disease, a, 0)){
-                            printf("Error!\n");
-                            return;
+                        else{
+                            if(!addHT(HT_country, a, 1)){
+                                printf("Error!\n");
+                                return;
+                            }
+                            if(!addHT(HT_disease, a, 0)){
+                                printf("Error!\n");
+                                return;
+                            }
+                            printf("New record added.\n\n");
                         }
-                        printf("New record added.\n\n");
                     }
                 }
             }
         }
         else if(strcmp(instruct, "recordPatientExit")==0){
             if(ind1==NULL || ind2==NULL){
-                printf("Need to provide recordId and exitDate.\n");
+                printf("Need to provide recordId and exitDate.\n\n");
             }
             else{
-                // has to be with AVL
-                // if( !updateExitDate(&Entries, ind1, ind2) ){
-                //     printf("Such Id doesn't exist.\n");
-                // }
                 if( UpdateExitDate( &((*DuplicateTree)->root), ind1, ind2 ) ){
                     printf("\nPatient exitDate changed!\n\n");
                 }
@@ -218,7 +248,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
             numCurrentPatients(HT_disease, ind1);
         }
         else{
-            printf("\nNo such instruction exists.\n");
+            printf("\nNo such instruction exists.\n\n");
         }
         free(tmp);
         free(inputString);
@@ -240,12 +270,11 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     size_t      len     = 0;
     __ssize_t   read;
     char        *line   = NULL;
-    Linked_List Entries;    // stores all correct the records
+    Linked_List Entries;
     HashTable   HT_disease, HT_country;
-    AVLTreePtr  DuplicateTree = initAVLTree();
-    // int         num_unique = 0;
+    AVLTreePtr  DuplicateTree;
 
-    if( !initMonitor(&file, &Entries, filename) ){
+    if( !initMonitor(&file, &Entries, filename, &DuplicateTree) ){
         return false;
     }
     printf("Loading. Please Wait...\n");
@@ -261,14 +290,11 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
             deleteRecord(&a);
             continue;
         }
-        // check and add in duplicator tree
-        if( addAVLNode(DuplicateTree, a, a->recordId)==false ){
+        if( addAVLNode(DuplicateTree, a, a->recordId)==false ){ // check and add in duplicator tree
             fprintf(stderr, "Patient with recordId %d already exists. Rejected!\n", atoi(a->recordId));
             deleteRecord(&a);
             free(line);
-
             emptyAVLTree(DuplicateTree);
-            
             emptyLinkedList(&Entries);
             free(Entries);
             fclose(file);
@@ -280,14 +306,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
                 return false;
             }
         }
-        // printf("\n\nPRIN\n");
-        // printAVLTree(DuplicateTree);
-        // printf("\nMETA\n\n");
     }
-    // get_child_nodes(DuplicateTree->root, &num_unique, NULL, NULL, NULL);
-    // printf("%d unique records.\n", num_unique);
-    // printLinkedList(Entries);
-    // printAVLTree(DuplicateTree);
 
     printf("\n");   // Hash Table with disease
     if( (HT_disease = initHashTable(bucketSize, diseaseHashtableNumOfEntries))==NULL ){

@@ -2,6 +2,7 @@
 #include "../headers/generalFuncs.h"
 
 int main(int argc, char** argv){
+    printf("\n\n");
     
     // ./diseaseMonitor -p patientRecordsFile –h1 diseaseHashtableNumOfEntries –h2 countryHashtableNumOfEntries –b bucketSize
     // argv[0] ./diseaseMonitor
@@ -31,5 +32,6 @@ int main(int argc, char** argv){
         exit(1);
     }
 
+    printf("\n\n");
     return 0;
 }

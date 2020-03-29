@@ -44,25 +44,23 @@ bool inputLLtoHT(Linked_List Entries, HashTable HT_in, int ind){
 void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, AVLTreePtr *DuplicateTree){
     char *inputString = NULL;
     char *tmp, *ind1, *ind2, *instruct, *ind3, *ind4, *ind5, *ind6, *ind7;
-    char *buffer = NULL;
-    size_t size = 100;
 
-    setbuf(stdout, NULL);
+    printf("Select instruction.\n");
 
-    // printf("Select instruction.\n");
+    inputString = takeString(stdin, 10);
+    while( strlen(inputString)==0 ){
+        printf("Select instruction.\n");
+        free(inputString);
+        inputString = NULL;
+        inputString = takeString(stdin, 10);
+    }
 
-    // while(strcmp(inputString, "/exit")!=0){
-    while( getline(&buffer, &size, stdin)!=-1 ){
-        
-        inputString = strtok(buffer, "\n");
-
+    while(strcmp(inputString, "exit")!=0){
         tmp = strdup(inputString);
-        
         if(tmp==NULL){
             printf("String failure.\n");
             return;
         }
-        
         instruct = strtok(tmp," \n\t");
         ind1 = strtok(NULL," \n\t");
         ind2 = strtok(NULL," \n\t");
@@ -72,7 +70,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
         ind6 = strtok(NULL," \n\t");
         ind7 = strtok(NULL," \n\t");
         
-        if(strcmp(instruct, "/globalDiseaseStats")==0){
+        if(strcmp(instruct, "globalDiseaseStats")==0){
             if(ind1!=NULL && ind2==NULL){
                 printf("Both dates should be either NULL or not NULL.\n\n");
             }
@@ -91,7 +89,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "/topk-Diseases" )==0){
+        else if( strcmp(instruct, "topk-Diseases" )==0){
             if(ind1==NULL || ind2==NULL){
                 printf("Need to provide k and country.\n\n");
             }
@@ -113,7 +111,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "/topk-Countries")==0 ){
+        else if( strcmp(instruct, "topk-Countries")==0 ){
             if(ind1==NULL || ind2==NULL){
                 printf("Need to provide k and disease.\n\n");
             }
@@ -135,7 +133,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "/diseaseFrequency")==0 ){ // diseaseFrequency virusName date1 date2 [country]
+        else if( strcmp(instruct, "diseaseFrequency")==0 ){ // diseaseFrequency virusName date1 date2 [country]
             // instruct diseaseFrequency
             // ind1     virusName has to be not NULL
             // ind2     date1 has to be not NULL
@@ -159,7 +157,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "/insertPatientRecord")==0 ){
+        else if( strcmp(instruct, "insertPatientRecord")==0 ){
             // instruct is insertPatientRecord
             // ind1 is recordID
             // ind2 is patientFirstName
@@ -230,42 +228,40 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                                 printf("Error!\n");
                                 return;
                             }
-                            printf("Record added\n\n");
+                            printf("New record added.\n\n");
                         }
                     }
                 }
             }
         }
-        else if(strcmp(instruct, "/recordPatientExit")==0){
+        else if(strcmp(instruct, "recordPatientExit")==0){
             if(ind1==NULL || ind2==NULL){
                 printf("Need to provide recordId and exitDate.\n\n");
             }
             else{
                 if( UpdateExitDate( &((*DuplicateTree)->root), ind1, ind2 ) ){
-                    printf("Record updated\n\n");
+                    printf("\nPatient exitDate changed!\n\n");
                 }
             }
         }
-        else if( strcmp(instruct, "/numCurrentPatients")==0 ){
+        else if( strcmp(instruct, "numCurrentPatients")==0 ){
             numCurrentPatients(HT_disease, ind1);
         }
-        else if( strcmp(instruct, "/exit")==0 ){
-            printf("exiting\n");
-            break;
-        }
         else{
-            printf("No such instruction exists.\n\n");
+            printf("\nNo such instruction exists.\n\n");
         }
         free(tmp);
         free(inputString);
-        buffer = NULL;
-        // printf("Select instruction.\n");
-
+        printf("Select instruction.\n");
+        inputString = takeString(stdin, 10);
+        while( strlen(inputString)==0 ){
+            printf("Select instruction.\n");
+            free(inputString);
+            inputString = NULL;
+            inputString = takeString(stdin, 10);
+        }
     }
-    // printf("exiting\n");
-    free(tmp);
     free(inputString);
-    buffer = NULL;
     return;
 }
 
@@ -281,7 +277,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     if( !initMonitor(&file, &Entries, filename, &DuplicateTree) ){
         return false;
     }
-    // printf("Loading. Please Wait...\n");
+    printf("Loading. Please Wait...\n");
     while( (read=getline(&line, &len, file))!=-1 ){
         
         patientRecord a = initRecord(line);
@@ -312,7 +308,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
         }
     }
 
-    // Hash Table with disease
+    printf("\n");   // Hash Table with disease
     if( (HT_disease = initHashTable(bucketSize, diseaseHashtableNumOfEntries))==NULL ){
         fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
         return false;
@@ -321,7 +317,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     
     // printf("Hash Table of Diseases is:\n"); printHashTable(HT_disease);
 
-    // Hash Table with country
+    printf("\n");   // Hash Table with country
     if( (HT_country = initHashTable(bucketSize, countryHashtableNumOfEntries))==NULL ){
         fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
         return false;

@@ -322,7 +322,7 @@ bool UpdateExitDate(AVLNodePtr *node, char *Id, char *date){
                 return true;
             }
             else{
-                printf("Patient can't have exited on that date!\n\n");
+                printf("\nPatient can't have exited on that date!\n\n");
                 return false;
             }
         }

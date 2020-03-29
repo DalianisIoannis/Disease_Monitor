@@ -1,5 +1,8 @@
 Ιωάννης Δαλιάνης
+1115201700027
 
+Προσοχή στην εκτέλεση του προγράμματος χρειάζεται να δίνεται το σωστό path για το
+αρχείο εγγραφών, πχ "Assets/fakeDiseases.txt".
 
 Τα δεδομένα για τα diseaseRecords των ασθενών αποθηκεύονται μία μόνο φορά στη μνήμη.
 Χρησιμοποιείται μια Απλά Συνδεδεμένη Λίστα για να κρατάει τους αρχικούς δείκτες προς
@@ -14,10 +17,17 @@
 
 Για όλες τις δομές έχουν υλοποιηθεί συναρτήσεις εκτύπωσης.
 
+Όταν φτιάχνεται ένα καινούριο patientRecord από αρχείο ή με την εντολή insertPatientRecord θεωρείται
+αυτονόητο ότι τα ορίσματα δίνονται με τη σωστή σειρά, χωρισμένα με κενά και στο τέλος της γραμμής υπάρχει
+\n.
+
 Οι ημερομηνίες αποθηκεύονται και επεξεργάζονται σα string της μορφής DD-MM-YYYY. Έχει
 υλοποιηθεί συνάρτηση που συγκρίνει δύο ημερομηνίες επιστρέφοντας int τιμές ανάλογα με το
 ποια ημερομηνία είναι μεταγενέστερη, αν κάποια είναι "-" κλπ.
 Αν δοθεί λάθος ημερομηνία, η compareDates τερματίζει το πρόγραμμα.
+
+Για διάφορες δομές όπως για τη λίστα, υλοποιήθηκαν κάποιες συναρτήσεις, οι οποίες εν τέλει δε
+χρησιμοποιούνται και είναι σχολιασμένες.
 
 AVL
 Έστω ότι οι τιμές βάσει των οποίων εισάγονται και κατανέμονται νέοι κόμβοι στο AVL Δέντρο
@@ -60,8 +70,8 @@ nodeHeight 1. To nodeHeight κάθε κόμβου του AVL χρησιμεύε�
 
 
 Hash Table:
-Από Piazza: Το bucketSize χρειάζεται για να ορίσει το ποσα entries χωράει το Bucket. Αν έχω
-bucketSize = 128 bytes και καθε entry ειναι 16 bytes τοτε το bucket χωραει 128 / 16 =  8 εγγραφές.
+Από Piazza: Στο bucket_size περιλαμβάνεται ο pointer στο επόμενο bucket. Πρέπει να δίνεται bucket_size
+τουλάχιστον 24 bytes για να χωράει 2 void pointers και ένας pointer σε επόμενο bucket.
 Η hashFunction δέχεται ένα string και έναν ακέραιο διαιρέτη. Αθροίζει τις int τιμές κάθε χαρακτήρα
 του int και επιστρέφει το υπόλοιπο της διαίρεσης του αθροίσματος με το διαιρέτη.
 Στη συνάρτηση που δημιουργεί ένα Hash Table γίνεται έλεγχος για την παράμετρο bucketSize που
@@ -93,6 +103,9 @@ SOS: Κατά τη δημιουγία ενός Max Heap, το reheapify μπορ
 Για να γίνεται το reheapification σε κάθε εισαγωγή, ξεσχολιάζω τη γραμμή 173 στο αρχείο MaxHeap.c και
 σχολιάζω τη γραμμή 280 στο αρχείο HashTable.c.
 Για να γίνεται το reheapification στο τέλος των εισαγωγών κάνω τους αντίθετους σχολιασμούς.
+Η συνάρτηση searchAllexisting αυξάνει το total των εμφανίσεων ενός κόμβου του Heap.
+Η συνάρτηση compareFatherWithChild συγκρίνει έναν πατέρα με το παιδί του και αν χρειάζεται
+ανταλλάζει τα περιεχόμενά τους.
 
 generalFuncs:
 Η συνάρτηση takeString δέχεται από το command line τις querry εντολές. Έχει παρθεί από το stack Overflow.
@@ -102,19 +115,36 @@ generalFuncs:
 μήνυμα, χωρίς όμως να τερματίζεται το πρόγραμμα όπως στην περίπτωση της αρχικής εισαγωγής records.
 
 
+den exo valei /
+
+/globalDiseaseStats 20-01-2005 20-04-2019
+/topk-Diseases 15 Australia 03-07-2001 28-05-2008
+/topk-Countries 15 EVD 03-07-2001 28-05-2008
+/topk-Diseases 12 France 12-12-2000 4-12-2001
+/diseaseFrequency EVD 03-07-2001 28-05-2008
+/diseaseFrequency COVID-2019 03-07-2000 28-05-2010 Turkey
+/insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003 10-09-2017
+/insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003
+/insertPatientRecord 2 Johny Patatas EVD Japan 10-09-2003
+/recordPatientExit 855 16-02-2006
+/numCurrentPatients FLU-2018
+/insertPatientRecord 10 Makis Dalianis EVD Greece 20-10-1999 20-10-1989
 
 
-globalDiseaseStats 20-01-2005 20-04-2019
-topk-Diseases 15 Australia 03-07-2001 28-05-2008
-topk-Countries 15 EVD 03-07-2001 28-05-2008
-diseaseFrequency EVD 03-07-2001 28-05-2008
-diseaseFrequency COVID-2019 03-07-2000 28-05-2010 Turkey
-insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003 10-09-2017
-insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003
-insertPatientRecord 2 Johny Patatas EVD Japan 10-09-2003
-recordPatientExit 855 16-02-2006
-numCurrentPatients FLU-2018
-insertPatientRecord 10 Makis Dalianis EVD Greece 20-10-1999 20-10-1989
+KATH
+
+./validator.sh Assets/small.txt 50 50 50
+
+/globalDiseaseStats
+/topk-Diseases 2 France
+/topk-Countries 2 SARSCOV-2
+/insertPatientRecord 1000 Joan Jones FLU Greece 12-12-2018 12-12-2019
+/recordPatientExit 7 25-12-2019
+/globalDiseaseStats 01-01-2000 20-03-2020
+/diseaseFrequency EVD 01-01-2000 20-03-2020
+/topk-Diseases 2 France 01-01-2000 20-03-2020
+/topk-Countries 2 SARSCOV-2 01-01-2000 20-03-2020
 
 
 README tha steilo kai pdf kai txt
+allo arxeio to compilation

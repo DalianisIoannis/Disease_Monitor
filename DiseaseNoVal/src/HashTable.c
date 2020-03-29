@@ -18,7 +18,7 @@ HashTable initHashTable(int bucket_size, int entries){
     // printf("array_size %d\n", array_size);
 
     if(array_size==0){
-        printf("Bucket_Size should be at least 24 bytes to store 2 void pointers and 1 next bucket pointer.\n");
+        printf("Bucket_Size should be at least 16 bytes to store 2 void pointers and 1 next bucket pointer.\n");
         free(HT);
         return NULL;
     }
@@ -192,8 +192,7 @@ void printNumOfDis(hashBucket b, char *d1, char *d2){
                 // printAVLTree(tt);
                 get_child_nodes( tt->root, &total, d1, d2, NULL );
                 // printf("\n\n\n");
-                // printf("Disease %s\thas %d occurences.\n", (char*)b->arr[i], total);
-                printf("%s %d\n", (char*)b->arr[i], total);
+                printf("Disease %s\thas %d occurences.\n", (char*)b->arr[i], total);
             }
         }
         printNumOfDis(b->next, d1, d2);
@@ -201,10 +200,13 @@ void printNumOfDis(hashBucket b, char *d1, char *d2){
 }
 
 void globalDiseaseStats(HashTable HT, char *d1, char *d2){
-    // printf("\n");
-    // if(d1!=NULL){ printf("Find occurences of all viruses from %s untill %s.\n", d1, d2); }
-    // else{ printf("Find occurences of all viruses.\n"); }
-
+    printf("\n");
+    if(d1!=NULL){
+        printf("Find occurences of all viruses from %s untill %s.\n", d1, d2);
+    }
+    else{
+        printf("Find occurences of all viruses.\n");
+    }
     for(int i=0; i<HT->entries; i++){
         printNumOfDis( &(HT->bucket_array)[i], d1, d2 );
     }
@@ -315,15 +317,23 @@ void diseaseOccurences(HashTable HT, char *k, char *dis, char *d3, char *d4){
 // if is_country==true find k more for particular country
 // else find for particular disease k more countries
 void topk(HashTable HT, char *d1, char *d2, char *d3, char *d4, bool is_country){
-    // printf("\n");
+    printf("\n");
     if( is_country==true ){
-        // if(d3!=NULL){ printf("Find occurences of all viruses in country %s from %s untill %s.\n", d2, d3, d4); }
-        // else{ printf("Find occurences of all viruses in country %s.\n", d2); }
+        if(d3!=NULL){
+            printf("Find occurences of all viruses in country %s from %s untill %s.\n", d2, d3, d4);
+        }
+        else{
+            printf("Find occurences of all viruses in country %s.\n", d2);
+        }
         countryOccurences(HT, d1, d2, d3, d4);
     }
     else{
-        // if(d3!=NULL){ printf("Find occurences of all countries with disease %s from %s untill %s.\n", d2, d3, d4); }
-        // else{ printf("Find occurences of all countries with disease %s.\n", d2); }
+        if(d3!=NULL){
+            printf("Find occurences of all countries with disease %s from %s untill %s.\n", d2, d3, d4);
+        }
+        else{
+            printf("Find occurences of all countries with disease %s.\n", d2);
+        }
         // d1 is k d2 is disease
         diseaseOccurences(HT, d1, d2, d3, d4);
     }
@@ -354,12 +364,10 @@ void accessSpecificBucketAndPrintTotalOfOccurences(hashBucket HtB, char *countr_
                 // printf("\tAVL tree of bucket\n");
                 // printAVLTree(tmpAVL); printf("\n");
                 if(find==NULL){
-                    // printf("Virus %s has %d occurences from %s until %s.\n", countr_or_disease, total, date1, date2);
-                    printf("%s %d\n", countr_or_disease, total);
+                    printf("Virus %s has %d occurences from %s until %s.\n", countr_or_disease, total, date1, date2);
                 }
                 else{
-                    // printf("Virus %s has %d occurences in %s from %s until %s.\n", find, total, countr_or_disease, date1, date2);
-                    printf("%s %d\n", find, total);
+                    printf("Virus %s has %d occurences in %s from %s until %s.\n", find, total, countr_or_disease, date1, date2);
                 }
                 return;
             }
@@ -370,14 +378,14 @@ void accessSpecificBucketAndPrintTotalOfOccurences(hashBucket HtB, char *countr_
 }
 
 void diseaseFrequencyNoCountry(HashTable HT, char *virusName, char *date1, char* date2){
-    // printf("\nFind number of occurences for virus %s from %s until %s.\n", virusName, date1, date2);
+    printf("\nFind number of occurences for virus %s from %s until %s.\n", virusName, date1, date2);
     int hV = hashFunction(virusName, HT->entries);
     accessSpecificBucketAndPrintTotalOfOccurences(&(HT->bucket_array)[hV], virusName, date1, date2, NULL);
     printf("\n");
 }
 
 void diseaseFrequencyCountry(HashTable HT, char *virusName, char *country, char *date1, char* date2){
-    // printf("\nFind number of occurences for virus %s in %s from %s until %s.\n", virusName, country, date1, date2);
+    printf("\nFind number of occurences for virus %s in %s from %s until %s.\n", virusName, country, date1, date2);
     int hV = hashFunction(country, HT->entries);
     accessSpecificBucketAndPrintTotalOfOccurences(&(HT->bucket_array)[hV], country, date1, date2, virusName);
     printf("\n");
@@ -411,7 +419,7 @@ void traverseHTforUnhealed(hashBucket HtB, char *virusName, int *occur){
 void numCurrentPatients(HashTable HT, char *virusName){
     int numOcc = 0;
     if(virusName==NULL){
-        // printf("Find number of patients still in hospital for each virus.\n");
+        printf("\nFind number of patients still in hospital for each virus.\n");
 
         for(int i=0; i<HT->entries; i++){
             traverseHTforUnhealed( &(HT->bucket_array)[i], NULL, &numOcc );
@@ -419,7 +427,7 @@ void numCurrentPatients(HashTable HT, char *virusName){
         printf("\n");
     }
     else{
-        // printf("Find number of patients still in hospital with virus %s.\n", virusName);
+        printf("\nFind number of patients still in hospital with virus %s.\n", virusName);
         int hV = hashFunction(virusName, HT->entries);
         traverseHTforUnhealed( &(HT->bucket_array)[hV], virusName, &numOcc );
         printf("Found %d patients.\n\n", numOcc);

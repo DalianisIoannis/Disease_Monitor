@@ -1,3 +1,0 @@
-mers-cov 3
-sars-1 2
-

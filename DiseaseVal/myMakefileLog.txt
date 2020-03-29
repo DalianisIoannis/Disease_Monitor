@@ -1,0 +1,9 @@
+gcc -g3 -Wall -c src/main.c -o build/main.o -lm
+gcc -g3 -Wall -c src/disMonitor.c -o build/disMonitor.o -lm
+gcc -g3 -Wall -c src/linkedList.c -o build/linkedList.o -lm
+gcc -g3 -Wall -c src/patients.c -o build/patients.o -lm
+gcc -g3 -Wall -c src/AVL.c -o build/AVL.o -lm
+gcc -g3 -Wall -c src/HashTable.c -o build/HashTable.o -lm
+gcc -g3 -Wall -c src/MaxHeap.c -o build/MaxHeap.o -lm
+gcc -g3 -Wall -c src/generalFuncs.c -o build/generalFuncs.o -lm
+gcc -g3 -Wall build/main.o build/disMonitor.o build/linkedList.o build/patients.o build/AVL.o build/HashTable.o build/MaxHeap.o build/generalFuncs.o -o diseaseMonitor -lm

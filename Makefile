@@ -24,6 +24,8 @@ $(EXECUTABLE): $(OBJ)
 clean:
 	rm -f $(ODIR)/*.o
 	rm -f $(EXECUTABLE)
+	find  . -name 'out*' -exec rm {} \;
+	find  . -name 'myMake*' -exec rm {} \;
 	# rm -f $(BDIR)/$(EXECUTABLE)
 
 all:
@@ -31,6 +33,7 @@ all:
 	make clean
 	make
 	valgrind ./diseaseMonitor -p "Assets/fakeDiseases.txt" –h1 8 –h2 3 –b 85
+	# valgrind ./diseaseMonitor -p "Assets/small.txt" –h1 50 –h2 50 –b 50
 	# valgrind ./diseaseMonitor -p "Assets/entrflor.txt" –h1 8 –h2 3 –b 45
 	# valgrind ./diseaseMonitor -p "Assets/bigEntries.txt" –h1 8 –h2 20 –b 43
 	# valgrind ./diseaseMonitor -p "Assets/fakeDiseasesDups.txt" –h1 8 –h2 3 –b 33

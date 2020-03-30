@@ -93,9 +93,7 @@ int compareDates(char *d1, char *d2){
 }
 
 bool isNumber(const char *str){
-    if( str==NULL || *str=='\0' ){
-        return false;
-    }
+    if( str==NULL || *str=='\0' ){ return false; }
     int minusCount  = 0,
         plusCount   = 0,
         dotCount    = 0;

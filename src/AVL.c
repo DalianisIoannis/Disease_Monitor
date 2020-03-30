@@ -140,7 +140,6 @@ bool compareAdd(AVLNodePtr *existent, AVLNodePtr *added, char *Id_dif){
     else{
 
         if( strcmp((*existent)->item->recordId, (*added)->item->recordId)==0 ){
-            // printf("FOUND SAME\n"); printf("In node %s\n", (*existent)->item->entryDate);
             free(*added);
             (*added) = NULL;
             return false;

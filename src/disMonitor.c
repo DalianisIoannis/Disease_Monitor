@@ -8,14 +8,10 @@ bool initMonitor(FILE **f, Linked_List *ll, char *filename, AVLTreePtr *Duplicat
     }
 
     *ll = initlinkedList();
-    if((*ll)==NULL){
-        return false;
-    }
+    if((*ll)==NULL){ return false; }
     
     *DuplicateTree = initAVLTree();
-    if((*DuplicateTree)==NULL){
-        return false;
-    }
+    if((*DuplicateTree)==NULL){ return false; }
 
     return true;
 }
@@ -33,34 +29,36 @@ void emptyMonitor(FILE **f, Linked_List *ll, char** line, HashTable *HT_disease,
 bool inputLLtoHT(Linked_List Entries, HashTable HT_in, int ind){
     listNode tmp = Entries->front;
     while(tmp!=NULL){
-        if(!addHT(HT_in, tmp->item, ind)){
-            return false;
-        }
+
+        if(!addHT(HT_in, tmp->item, ind)){ return false; }
         tmp = tmp->next;
     }
     return true;
 }
 
 void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, AVLTreePtr *DuplicateTree){
-    char *inputString = NULL;
+    char *inputString = NULL, *buffer = NULL;
     char *tmp, *ind1, *ind2, *instruct, *ind3, *ind4, *ind5, *ind6, *ind7;
+    size_t size = 0;
 
-    printf("Select instruction.\n");
+    // setbuf(stdout, NULL);
+    // printf("Select instruction.\n");
 
-    inputString = takeString(stdin, 10);
-    while( strlen(inputString)==0 ){
-        printf("Select instruction.\n");
-        free(inputString);
-        inputString = NULL;
-        inputString = takeString(stdin, 10);
-    }
+    while( getline(&buffer, &size, stdin)!=-1 ){
+        
+        if( strcmp(buffer, "\n")!=0 ){
+            inputString = strtok(buffer, "\n");
+        }
+        else{ free(buffer); }
 
-    while(strcmp(inputString, "exit")!=0){
-        tmp = strdup(inputString);
+        if( inputString==NULL ){ tmp = strdup("$$$"); }
+        else{ tmp = strdup(inputString); }
+        
         if(tmp==NULL){
             printf("String failure.\n");
             return;
         }
+        
         instruct = strtok(tmp," \n\t");
         ind1 = strtok(NULL," \n\t");
         ind2 = strtok(NULL," \n\t");
@@ -70,7 +68,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
         ind6 = strtok(NULL," \n\t");
         ind7 = strtok(NULL," \n\t");
         
-        if(strcmp(instruct, "globalDiseaseStats")==0){
+        if(strcmp(instruct, "/globalDiseaseStats")==0){
             if(ind1!=NULL && ind2==NULL){
                 printf("Both dates should be either NULL or not NULL.\n\n");
             }
@@ -89,7 +87,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "topk-Diseases" )==0){
+        else if( strcmp(instruct, "/topk-Diseases" )==0){
             if(ind1==NULL || ind2==NULL){
                 printf("Need to provide k and country.\n\n");
             }
@@ -111,7 +109,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "topk-Countries")==0 ){
+        else if( strcmp(instruct, "/topk-Countries")==0 ){
             if(ind1==NULL || ind2==NULL){
                 printf("Need to provide k and disease.\n\n");
             }
@@ -133,7 +131,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "diseaseFrequency")==0 ){ // diseaseFrequency virusName date1 date2 [country]
+        else if( strcmp(instruct, "/diseaseFrequency")==0 ){ // diseaseFrequency virusName date1 date2 [country]
             // instruct diseaseFrequency
             // ind1     virusName has to be not NULL
             // ind2     date1 has to be not NULL
@@ -157,7 +155,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                 }
             }
         }
-        else if( strcmp(instruct, "insertPatientRecord")==0 ){
+        else if( strcmp(instruct, "/insertPatientRecord")==0 ){
             // instruct is insertPatientRecord
             // ind1 is recordID
             // ind2 is patientFirstName
@@ -228,40 +226,41 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
                                 printf("Error!\n");
                                 return;
                             }
-                            printf("New record added.\n\n");
+                            printf("Record added\n\n");
                         }
                     }
                 }
             }
         }
-        else if(strcmp(instruct, "recordPatientExit")==0){
+        else if(strcmp(instruct, "/recordPatientExit")==0){
             if(ind1==NULL || ind2==NULL){
                 printf("Need to provide recordId and exitDate.\n\n");
             }
             else{
                 if( UpdateExitDate( &((*DuplicateTree)->root), ind1, ind2 ) ){
-                    printf("\nPatient exitDate changed!\n\n");
+                    printf("Record updated\n\n");
                 }
             }
         }
-        else if( strcmp(instruct, "numCurrentPatients")==0 ){
+        else if( strcmp(instruct, "/numCurrentPatients")==0 ){
             numCurrentPatients(HT_disease, ind1);
         }
+        else if( strcmp(instruct, "/exit")==0 ){
+            printf("exiting\n");
+            break;
+        }
         else{
-            printf("\nNo such instruction exists.\n\n");
+            printf("No such instruction exists.\n\n");
         }
         free(tmp);
+        tmp = NULL;
         free(inputString);
-        printf("Select instruction.\n");
-        inputString = takeString(stdin, 10);
-        while( strlen(inputString)==0 ){
-            printf("Select instruction.\n");
-            free(inputString);
-            inputString = NULL;
-            inputString = takeString(stdin, 10);
-        }
+        inputString = NULL;
+        buffer = NULL;
     }
+    free(tmp);
     free(inputString);
+    buffer = NULL;
     return;
 }
 
@@ -274,10 +273,8 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     HashTable   HT_disease, HT_country;
     AVLTreePtr  DuplicateTree;
 
-    if( !initMonitor(&file, &Entries, filename, &DuplicateTree) ){
-        return false;
-    }
-    printf("Loading. Please Wait...\n");
+    // printf("Loading. Please Wait...\n");
+    if( !initMonitor(&file, &Entries, filename, &DuplicateTree) ){ return false; }
     while( (read=getline(&line, &len, file))!=-1 ){
         
         patientRecord a = initRecord(line);
@@ -308,7 +305,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
         }
     }
 
-    printf("\n");   // Hash Table with disease
+    // Hash Table with disease
     if( (HT_disease = initHashTable(bucketSize, diseaseHashtableNumOfEntries))==NULL ){
         fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
         return false;
@@ -317,7 +314,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     
     // printf("Hash Table of Diseases is:\n"); printHashTable(HT_disease);
 
-    printf("\n");   // Hash Table with country
+    // Hash Table with country
     if( (HT_country = initHashTable(bucketSize, countryHashtableNumOfEntries))==NULL ){
         fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
         return false;

@@ -62,9 +62,7 @@ bool searchAllexisting(HeapNodePtr *father, char *item){
             return true;
         }
         bool tmp = searchAllexisting( &(*father)->left, item );
-        if(tmp==true){
-            return true;
-        }
+        if(tmp==true){ return true; }
         return searchAllexisting( &(*father)->right, item );
     }
     return false;

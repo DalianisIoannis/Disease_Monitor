@@ -115,8 +115,6 @@ generalFuncs:
 μήνυμα, χωρίς όμως να τερματίζεται το πρόγραμμα όπως στην περίπτωση της αρχικής εισαγωγής records.
 
 
-den exo valei /
-
 /globalDiseaseStats 20-01-2005 20-04-2019
 /topk-Diseases 15 Australia 03-07-2001 28-05-2008
 /topk-Countries 15 EVD 03-07-2001 28-05-2008
@@ -126,6 +124,7 @@ den exo valei /
 /insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003 10-09-2017
 /insertPatientRecord 700000 Johny Patatas EVD Japan 10-09-2003
 /insertPatientRecord 2 Johny Patatas EVD Japan 10-09-2003
+/topk-Diseases 15 Japan 03-07-2001 28-05-2008
 /recordPatientExit 855 16-02-2006
 /numCurrentPatients FLU-2018
 /insertPatientRecord 10 Makis Dalianis EVD Greece 20-10-1999 20-10-1989
@@ -145,6 +144,8 @@ KATH
 /topk-Diseases 2 France 01-01-2000 20-03-2020
 /topk-Countries 2 SARSCOV-2 01-01-2000 20-03-2020
 
+/numCurrentPatients
+/numCurrentPatients SARSCOV-2
 
 README tha steilo kai pdf kai txt
 allo arxeio to compilation

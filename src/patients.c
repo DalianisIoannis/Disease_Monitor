@@ -48,7 +48,6 @@ void printRecord(patientRecord p){
 }
 
 void deleteRecord(patientRecord* p){
-    // printf("\tDelete patient with RecordId %s\n", (*p)->recordId);
     free( (*p)->recordId );
     free( (*p)->patientFirstName );
     free( (*p)->patientLastName );

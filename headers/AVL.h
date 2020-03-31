@@ -19,7 +19,6 @@ typedef struct AVLNode{
 typedef AVLNode *AVLNodePtr;
 
 
-
 typedef struct{
     AVLNodePtr root;
 } AVLTree;

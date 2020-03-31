@@ -86,3 +86,10 @@
 6724    Evan        Alexander   MERS-COV    Vietnam     13-11-2000  21-07-2011
 6721    Bryan       Foster      FLU-2018    Denmark     14-09-2001  12-07-2017
 4239    Wanda       Moore       FLU-2018    Greece      31-05-2001  20-10-2019
+860     Julie       Martin      TSOUTSOU    Australia   10-07-2008  15-12-2016
+861     Julie       Martin      TSOUTSOU    Australia   10-07-2008  15-12-2016
+862     Julie       Martin      TSOUTSOU    Australia   10-07-2008  15-12-2016
+863     Julie       Martin      LOULOU      Australia   10-07-2008  15-12-2016
+864     Julie       Martin      LOULOU      Australia   10-07-2008  15-12-2016
+865     Julie       Martin      PRITS       Australia   10-07-2008  15-12-2016
+866     Julie       Martin      KOUKOU      Australia   10-07-2008  15-12-2016

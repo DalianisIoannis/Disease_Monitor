@@ -42,7 +42,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
     size_t size = 0;
 
     // setbuf(stdout, NULL);
-    // printf("Select instruction.\n");
+    printf("Select instruction.\n");
 
     while( getline(&buffer, &size, stdin)!=-1 ){
         
@@ -257,6 +257,7 @@ void Querries(HashTable HT_disease, HashTable HT_country, Linked_List Entries, A
         free(inputString);
         inputString = NULL;
         buffer = NULL;
+        printf("Select instruction.\n");
     }
     free(tmp);
     free(inputString);
@@ -273,7 +274,7 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     HashTable   HT_disease, HT_country;
     AVLTreePtr  DuplicateTree;
 
-    // printf("Loading. Please Wait...\n");
+    printf("Loading. Please Wait...\n");
     if( !initMonitor(&file, &Entries, filename, &DuplicateTree) ){ return false; }
     while( (read=getline(&line, &len, file))!=-1 ){
         
@@ -305,7 +306,6 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
         }
     }
 
-    // Hash Table with disease
     if( (HT_disease = initHashTable(bucketSize, diseaseHashtableNumOfEntries))==NULL ){
         fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
         return false;
@@ -314,7 +314,6 @@ bool disMonitor(char *filename, int diseaseHashtableNumOfEntries, int countryHas
     
     // printf("Hash Table of Diseases is:\n"); printHashTable(HT_disease);
 
-    // Hash Table with country
     if( (HT_country = initHashTable(bucketSize, countryHashtableNumOfEntries))==NULL ){
         fprintf(stderr, "Couldn't allocate Hash Table. Abort...\n");
         return false;

@@ -1,5 +1,5 @@
 # Disease_Monitor
-An app that saves, edits and receives querries on viruses outbreaks' data. Maybe printKlargest should not check if getting to a neighbor node.
+An app that saves, edits and receives querries on viruses outbreaks' data.
 ## Compile
 ```bash
 make

@@ -1,5 +1,6 @@
 # Disease_Monitor
-An app that saves, edits and receives querries on viruses outbreaks' data.
+Project implemented for the course of Systems Programming (2020) in Department of Informatics and Telecommunications at University of Athens. An app that saves, edits and receives querries on viruses outbreaks' data.
+
 ## Compile
 ```bash
 make

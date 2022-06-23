@@ -1,5 +1,7 @@
 # Disease_Monitor
-Project implemented for the course of Systems Programming (2020) in Department of Informatics and Telecommunications at University of Athens. An app that saves, edits and receives querries on viruses outbreaks' data.
+Project implemented for the course of Systems Programming (2020) in Department of Informatics and Telecommunications at University of Athens.
+A program that processes querries on viruses' data through various Data Structures(Hashtable, AVL-Trees, Linked Lists and Max-Heap).
+File "instrs.txt" contains some instuctions that show the functionality of the program. "validator.sh" is an autograder for the project.
 
 ## Compile
 ```bash

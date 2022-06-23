@@ -8,5 +8,4 @@ make
 ```bash
 ./diseaseMonitor -p patientRecordsFile –h1 diseaseHashtableNumOfEntries –h2 countryHashtableNumOfEntries –b bucketSize
 ```
-where patientRecordsFile can be a file from Assets
-      diseaseHashtableNumOfEntries, countryHashtableNumOfEntries, bucketSize are integers
+where patientRecordsFile can be a file from Assets, while diseaseHashtableNumOfEntries, countryHashtableNumOfEntries, bucketSize are integers.
